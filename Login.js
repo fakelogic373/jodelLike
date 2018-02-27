@@ -28,9 +28,12 @@ export default class App extends React.Component {
         if (this.state.image) {
             const result = await uploadImage(this.state.image, user.email)
         }
+        // const { navigate } = this.props.navigation
+        // navigate("Contacts", {user: user.email})
+
         const { navigate } = this.props.navigation
-        navigate("Contacts", {user: user.email})
-        // this.props.navigation.navigate('Contacts')
+        navigate("PostsReceive", {user: user.email})
+        
     }
 
     handleChangePage = () => {

@@ -21,7 +21,7 @@ export default class Posts extends React.Component {
   }
 
   async componentDidMount() {
-    const setListener = await db.collection('users').doc(this.props.user).collection('postsreceive').onSnapshot(
+    const setListener = await db.collection('users').doc(this.props.navigation.state.params.user).collection('postsreceive').onSnapshot(
       snap => {
         let posts = []
         snap.forEach(
@@ -38,10 +38,10 @@ export default class Posts extends React.Component {
   }
 
   //   async handleAdd() {
-  //     // await db.collection('users').doc(this.props.user).collection('posts').add({ from: this.props.user, to: this.state.to, content: this.state.content })
-  //     // await db.collection('users').doc(this.state.to).collection('posts').add({ from: this.props.user, to: this.state.to, content: this.state.content })
-  //     await db.collection('posts').doc(this.props.user).add({ from: this.props.user, to: this.state.to, content: this.state.content })
-  //     await db.collection('posts').doc(this.state.to).add({ from: this.props.user, to: this.state.to, content: this.state.content })
+  //     // await db.collection('users').doc(this.props.navigation.state.params.user).collection('posts').add({ from: this.props.navigation.state.params.user, to: this.state.to, content: this.state.content })
+  //     // await db.collection('users').doc(this.state.to).collection('posts').add({ from: this.props.navigation.state.params.user, to: this.state.to, content: this.state.content })
+  //     await db.collection('posts').doc(this.props.navigation.state.params.user).add({ from: this.props.navigation.state.params.user, to: this.state.to, content: this.state.content })
+  //     await db.collection('posts').doc(this.state.to).add({ from: this.props.navigation.state.params.user, to: this.state.to, content: this.state.content })
   //   }
 
   handleLogout() {
@@ -70,10 +70,9 @@ export default class Posts extends React.Component {
                       <Text>{message.content}</Text>
                       <Button
                         title="Go to Second"
-                        onPress={() => this.props.navigation.navigate('Messages', {
-                          useremail: this.props.user
+                        onPress={() => this.props.navigation.navigate('PostComments', {
+                          user: this.props.navigation.state.params.user
                         }
-                        
                         )}
                       />
 
@@ -86,7 +85,7 @@ export default class Posts extends React.Component {
             :
             <Text>Loading...</Text>
         }
-        <UserImage user={this.props.user} />
+        <UserImage user={this.props.navigation.state.params.user} />
         {/* <TextInput
           placeholder="To"
           value={this.state.to}
