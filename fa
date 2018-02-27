@@ -1,0 +1,209 @@
+
+import React from 'react';
+import { StyleSheet, Text, View, Image, TextInput, Button, ScrollView } from 'react-native';
+import db from './db'
+
+
+
+// var config = {
+
+
+//   apiKey: "AIzaSyBuNl20JiLpWhaXyLr-f8qvJHcqWVxiFeU",
+//   authDomain: "project01-53a6a.firebaseapp.com",
+//   databaseURL: "https://project01-53a6a.firebaseio.com",
+//   projectId: "project01-53a6a",
+//   storageBucket: "project01-53a6a.appspot.com",
+//   messagingSenderId: "810456971979"
+
+// }
+
+
+
+
+
+
+export default class Messages extends React.Component {
+
+    state = {
+        messages: null,
+        //remove from
+        from: '66440099',
+        to: 'all',
+        content: '',
+
+    }
+
+
+
+
+    componentDidMount() {
+        this.listenForItems()
+    }
+
+
+
+
+
+    listenForItems() {
+        db.collection('/users/X1yGEFWDfbnxuOcD2beJ/messages').onSnapshot(
+            snap => {
+                let messages = []
+                snap.forEach(
+                    doc => {
+                        messages.push({ id: doc.id, from: doc.data().from, to: doc.data().to, content: doc.data().content });
+                        console.log(doc.data());
+                    });
+                this.setState({
+                    messages
+                });
+
+            });
+
+    }
+
+    async handleAdd() {
+        console.log(this.state.from)
+        console.log(this.state.to)
+        console.log(this.state.content)
+        await db.collection('/users/X1yGEFWDfbnxuOcD2beJ/messages').add({ from: this.state.from, to: this.state.to, content: this.state.content })
+    }
+
+
+
+
+
+
+
+    render() {
+
+            return (
+
+                <View style={styles.container}>
+                    <View style={{
+                        flex: 1, alignItems: 'center',
+                        justifyContent: 'center'
+                    }}>
+                        <Text style={{ fontSize: 40 }}>Whatsup app</Text>
+                        <Text >username: {this.state.from}</Text>
+                        <TextInput
+                            style={{ width: 200, borderColor: 'gray', borderWidth: 1 }}
+                            placeholder="user"
+                            onChangeText={from => this.setState({ from })}
+                        />
+
+                    </View>
+
+                    {/* message.to == this.state.user || message.to== 'all' || message.to== 'All'  */}
+                    <View style={{ flex: 3, backgroundColor: '#80b7af' }}>
+                        <ScrollView>
+                            {
+                                this.state.messages
+                                    ?
+                                    this.state.messages.filter(message =>
+                                        message.to === 'All' ||
+                                        message.to === 'all' ||
+                                        message.to === this.state.from
+                                    ).map(
+                                        message =>
+                                            <View key={message.id}>
+                                                <View style={{ backgroundColor: '#c3f7ef', margin: 10 }}>
+                                                    <Text style={styles.item}>
+                                                        From: {message.from}
+                                                        _To: {message.to}
+                                                        _Content: {message.content}
+                                                    </Text>
+                                                </View>
+
+                                            </View>
+                                        )
+                                    :
+                                    <View>
+                                        <Text>Loading ...</Text>
+                                    </View>
+                            }
+                        </ScrollView>
+
+                    </View>
+
+                    <View style={{ flex: 1, margin: 10 }}>
+
+
+                        <TextInput
+                            style={{ width: 300, borderColor: 'gray', borderWidth: 1 }}
+                            placeholder="from"
+                            onChangeText={from => this.setState({ from })}
+                        />
+                        <TextInput
+                            style={{ width: 300, borderColor: 'gray', borderWidth: 1 }}
+                            placeholder="to"
+                            onChangeText={to => this.setState({ to })}
+                        />
+
+                        <TextInput
+                            style={{ width: 300, height: 50, borderColor: 'gray', borderWidth: 1 }}
+                            placeholder="content"
+                            onChangeText={content => this.setState({ content })}
+                        />
+
+                        <Button
+                            onPress={() => this.handleAdd()}
+                            title="Send"
+                        />
+
+                    </View>
+
+
+
+
+
+                </View>
+            )
+    
+    }
+}
+
+
+
+const styles =
+    StyleSheet.create({
+
+        container: {
+            flex: 1,
+            backgroundColor: '#fff',
+            alignItems: 'center',
+            justifyContent: 'center',
+        },
+        item: {
+            padding: 10,
+            fontSize: 10,
+            width: 300
+        }
+
+    });
+
+
+
+
+db.users.insert({ _id: "fakelogic373" })
+
+
+db.items.insert({ seller: "fakelogic373", buyer:"", description: "its a toy care" , expiry: new Date(), highbid: 0,  })
+
+db.items.insert(
+[{
+  "seller": "fakelogic373",
+  "buyer": "",
+  "expiry": new Date("2016-05-18T16:00:00Z"),
+  "highbid": 0,
+  "bids": [
+    {
+      "username": "fahad123",
+      "amount": 26
+    },
+    {
+      "username": "Jacquelyn",
+      "amount": 47
+    }
+  ]
+}]
+)
