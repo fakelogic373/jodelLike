@@ -1,177 +1,115 @@
-
 import React from 'react';
-
-import { StyleSheet, Text, View, Image, TextInput, Button, ScrollView } from 'react-native';
-
+import { StyleSheet, Text, View, TextInput, Button, ScrollView, TouchableOpacity } from 'react-native';
 import * as firebase from 'firebase';
-
-import 'firebase/firestore';
-import Messages from './Messages'
-import db from './db'
+import 'firebase/firestore'
+import Messages from './Messages.js'
 import ImagePicker from 'react-native-image-picker'
-
+import Register from './Register'
 import { pickImage, uploadImage } from './ImageUtils'
+import * as Aziz from 'native-base';
 
-
-
-
-export default class Login extends React.Component {
+export default class App extends React.Component {
 
     state = {
-        password: '',
-        password2: '',
         email: '',
-        image: null
-
+        password: ''
+        // flag: true
     }
+    // async handleLogin () {
+    //     await firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
+    //     if (this.state.image) {
+    //         const result = await uploadImage(this.state.image, user.email)
+    //     }
+        
+    // }
 
-    async handleLogin() {
-        await firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
-        //dont need user now nut lister will be triggred
+    handleLogin = async () => {
+        const user = await firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
         if (this.state.image) {
             const result = await uploadImage(this.state.image, user.email)
         }
-
+        const { navigate } = this.props.navigation
+        navigate("Contacts", {user: user.email})
+        // this.props.navigation.navigate('Contacts')
     }
 
-
-
-    async handleRegister() {
-        if (this.state.password2 == this.state.password) {
-            if (!this.state.image) {
-                this.setState({ image: await this.pickImage() })
-            }
-            const user = await firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password)
-            if (this.state.image) {
-                const result = await uploadImage(this.state.image, user.email)
-            }
-        }
+    handleChangePage = () => {
+        this.setState({ flag: false})
     }
 
-    // handlePickImage(){
-    //     // More info on all the options is below in the README...just some common use cases shown here
-    //     var options = {
-    //         title: 'Select Avatar',
-    //         customButtons: [
-    //         {name: 'fb', title: 'Choose Photo from Facebook'},
-    //         ],
-    //         storageOptions: {
-    //         skipBackup: true,
-    //         path: 'images'
-    //         }
-    //     };
+    render() {
+        return (
 
-    async handlePickImage() {
-        this.setState({ image: await pickImage() })
-    };
+            <Aziz.Container>
 
-    /**
-     * The first arg is the options object for customization (it can also be null or omitted for default options),
-     * The second arg is the callback which sends object: response (more info below in README)
-     */
-    // ImagePicker.showImagePicker(options, (response) => {
-    //     console.log('Response = ', response);
+                {/* CONTENT */}
+                <Aziz.Content>
 
-    //     if (response.didCancel) {
-    //         console.log('User cancelled image picker');
-    //     }
-    //     else if (response.error) {
-    //         console.log('ImagePicker Error: ', response.error);
-    //     }
-    //     else if (response.customButton) {
-    //         console.log('User tapped custom button: ', response.customButton);
-    //     }
-    //     else {
-    //         let source = { uri: response.uri };
+                    <Aziz.Form>
 
-    //         // You can also display the image using data:
-    //         // let source = { uri: 'data:image/jpeg;base64,' + response.data };
 
-    //         this.setState({
-    //             avatarSource: source
-    //         });
-    //     }
-    // });
-    // }
+                        <Aziz.Item floatingLabel>
+                            <Aziz.Label>Username</Aziz.Label>
+
+                            <Aziz.Input onChangeText={email => this.setState({ email })} />
+                        </Aziz.Item>
+
+                        <Aziz.Item floatingLabel>
+                            <Aziz.Label>Password</Aziz.Label>
+                            <Aziz.Input secureTextEntry onChangeText={password => this.setState({ password })} />
+                        </Aziz.Item>
+
+                        <View style={{ padding: 40, alignItems: 'center', justifyContent: 'center' }}>
+                            <Aziz.Button block success iconLeft onPress={() => this.handleLogin()}>
+                                <Aziz.Icon name='person' />
+                                <Aziz.Text>Login</Aziz.Text>
+
+                            </Aziz.Button>
+                        </View>
+
+                        <View style={{ padding: 40, alignItems: 'center', justifyContent: 'center' }}>
+                            <Aziz.Button block success iconLeft onPress={() => this.props.navigation.navigate('Register')}>
+                                <Aziz.Text>Register </Aziz.Text>
+                            </Aziz.Button>
+                        </View>
 
 
 
+                    </Aziz.Form>
 
-render() {
+                </Aziz.Content>
 
-    return (
-        <View style={styles.container}>
+                {/* FOOTER */}
+                <Aziz.Footer>
 
+                </Aziz.Footer>
 
-            <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', }}>
-                <TextInput style={{ borderRadius: 4, borderWidth: 0.5, width: 100, margin: 10 }}
-                    placeholder="Email"
-
-                    value={this.state.email}
-                    // onChange={email => this.setState({ email : this.state.email})}
-                    onChangeText={email => this.setState({ email })}
-                />
-
-
-                <TextInput style={{ borderRadius: 4, borderWidth: 0.5, width: 100 }}
-                    placeholder="Password"
-                    secureTextEntry
-
-                    value={this.state.password}
-                    onChangeText={password => this.setState({ password })}
-                />
-                <Button
-                    onPress={() => this.handleLogin()}
-                    title="Login"
-                />
-
-            </View>
-
-            <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', }}>
-
-                <TextInput
-                    placeholder="Password2"
-                    value={this.state.password2}
-                    onChangeText={password2 => this.setState({ password2 })}
-                />
-
-                <Button
-                    onPress={() => this.handlePickImage()}
-                    title="pick image"
-                />
-
-                <Button
-                    onPress={() => this.handleRegister()}
-                    title="Register"
-                />
-
-            </View>
-
-
-
-
-
-
-        </View>
-    )
-}
+            </Aziz.Container>
+        )
+    }
 }
 
-
-
-const styles =
-    StyleSheet.create({
-
-        container: {
-            flex: 1,
-            backgroundColor: '#fff',
-            alignItems: 'center',
-            justifyContent: 'center',
-        },
-        item: {
-            padding: 10,
-            fontSize: 10,
-            width: 300
-        }
-
-    });
+const styles = StyleSheet.create({
+    Login: {
+        fontSize: 20,
+        margin: 50,
+        borderRadius: 70,
+        borderWidth: 2,
+        padding: 25,
+    },
+    container: {
+        flex: 1,
+        paddingTop: 50,
+        backgroundColor: '#C6F0FF',
+        alignItems: 'center',
+    },
+    forBoxes: {
+        borderRadius: 10,
+        borderRadius: 5,
+        width: 200,
+        borderWidth: 1,
+        height: 30,
+        padding: 3,
+        margin: 5
+    }
+});
