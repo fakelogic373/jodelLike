@@ -3,6 +3,7 @@ import { Image, StyleSheet, Text, View, TextInput, Button, FlatList } from 'reac
 import UserImage from './UserImage'
 import db from './db'
 import firebase from 'firebase'
+import 'firebase/firestore';
 
 export default class Messages extends React.Component {
 
@@ -14,6 +15,7 @@ export default class Messages extends React.Component {
   }
 
   async componentDidMount() {
+
     const setListener = await db.collection('users').doc(this.props.user).collection('messages').onSnapshot(
       snap => {
         let messages = []
@@ -24,6 +26,7 @@ export default class Messages extends React.Component {
         this.setState({ messages })
       })
     this.setState({ setListener })
+
   }
 
   componentWillUnmount() {
@@ -34,7 +37,6 @@ export default class Messages extends React.Component {
     await db.collection('users').doc(this.props.user).collection('messages').add({ from: this.props.user, to: this.state.to, content: this.state.content })
     await db.collection('users').doc(this.state.to).collection('messages').add({ from: this.props.user, to: this.state.to, content: this.state.content })
   }
-
   handleLogout() {
     firebase.auth().signOut()
 }

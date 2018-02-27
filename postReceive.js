@@ -4,6 +4,7 @@ import UserImage from './UserImage'
 import db from './db'
 import firebase from 'firebase'
 import Test from './test'
+import { StackNavigator } from 'react-navigation';
 
 export default class Posts extends React.Component {
 
@@ -14,6 +15,7 @@ export default class Posts extends React.Component {
     date: '',
     posts: null,
     removeListener: null,
+    isClicked: null,
 
 
   }

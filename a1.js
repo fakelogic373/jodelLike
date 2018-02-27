@@ -8,7 +8,6 @@ import db from './db'
 import Login from './Login'
 import Test from './test'
 import PostReceive from './postReceive'
-import Navigation from './navgation'
 import { StackNavigator } from 'react-navigation';
 
 
@@ -21,9 +20,35 @@ export default class App extends React.Component {
 
   }
 
-  render() {
+  componentDidMount() {
+    this.authSubscription = firebase.auth().onAuthStateChanged((user) => {
+      this.setState({
+        loading: false,
+        user,
+      });
+    });
+  }
 
-    return <RootStack />
+  componentWillUnmount() {
+    this.authSubscription()
+  }
+
+
+
+  render() {
+    console.log('user = ', this.props.user)
+
+    if (this.state.loading)
+      return null
+    else if
+    (this.state.user)
+      return (
+        // <Messages user={this.state.user.email}/>
+        <PostReceive user={this.state.user.email}/>
+       
+      )
+    else
+      return <Login />
   }
 }
 
@@ -46,26 +71,3 @@ const styles =
 
   });
 
-
-const RootStack = StackNavigator(
-  {
-    Home: {
-      screen: Navigation,
-    },
-    Second: {
-      screen: Messages,
-    },
-
-  },
-  {
-    initialRouteName: 'Home',
-    navigationOptions: {
-      headerStyle: { backgroundColor: '#474787' },
-      headerTintColor: 'white',
-      headerTitleStyle: {
-        fontSize: 16
-      }
-    }
-  },
-
-);
