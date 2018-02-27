@@ -53,7 +53,7 @@ export default class Messages extends React.Component {
               keyExtractor={message => message.id}
               renderItem={
                 message => {
-                  message = message.item // because of FlatList
+                  message = message.item 
                   return (
                     <View key={message.id}
                           style={message.from === this.props.user ? styles.fromMe : styles.toMe}>

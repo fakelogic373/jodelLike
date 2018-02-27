@@ -3,30 +3,25 @@ import { Image, StyleSheet, Text, View, TextInput, Button, FlatList } from 'reac
 import UserImage from './UserImage'
 import db from './db'
 import firebase from 'firebase'
-import Test from './test'
 
-export default class Posts extends React.Component {
+export default class Messages extends React.Component {
 
   state = {
-    location: '',
+    to: '',
     content: '',
-    type: '',
-    date: '',
-    posts: null,
-    removeListener: null,
-
-
+    messages: null,
+    removeListener: null
   }
 
   async componentDidMount() {
-    const setListener = await db.collection('users').doc(this.props.user).collection('postsreceive').onSnapshot(
+    const setListener = await db.collection('users').doc(this.props.user).collection('messages').onSnapshot(
       snap => {
-        let posts = []
+        let messages = []
         snap.forEach(
           doc =>
-            posts.push({ id: doc.id, type: doc.data().type, location: doc.data().location, content: doc.data().content, date: doc.data().date })
+            messages.push({ id: doc.id, from: doc.data().from, to: doc.data().to, content: doc.data().content })
         )
-        this.setState({ posts })
+        this.setState({ messages })
       })
     this.setState({ setListener })
   }
@@ -35,45 +30,39 @@ export default class Posts extends React.Component {
     this.state.removeListener()
   }
 
-  //   async handleAdd() {
-  //     // await db.collection('users').doc(this.props.user).collection('posts').add({ from: this.props.user, to: this.state.to, content: this.state.content })
-  //     // await db.collection('users').doc(this.state.to).collection('posts').add({ from: this.props.user, to: this.state.to, content: this.state.content })
-  //     await db.collection('posts').doc(this.props.user).add({ from: this.props.user, to: this.state.to, content: this.state.content })
-  //     await db.collection('posts').doc(this.state.to).add({ from: this.props.user, to: this.state.to, content: this.state.content })
-  //   }
+  async handleAdd() {
+    await db.collection('users').doc(this.props.user).collection('messages').add({ from: this.props.user, to: this.state.to, content: this.state.content })
+    await db.collection('users').doc(this.state.to).collection('messages').add({ from: this.props.user, to: this.state.to, content: this.state.content })
+  }
 
   handleLogout() {
     firebase.auth().signOut()
-  }
+}
 
 
   render() {
     return (
       <View style={styles.container}>
-        <Text>Posts</Text>
+        <Text>Messages</Text>
         {
-          this.state.posts
+          this.state.messages
             ?
             <FlatList
               style={styles.list}
-              data={this.state.posts}
+              data={this.state.messages}
               keyExtractor={message => message.id}
               renderItem={
                 message => {
                   message = message.item // because of FlatList
-
                   return (
-                    <View key={message.id} style={styles.toMe}>
-
+                    <View key={message.id}
+                          style={message.from === this.props.user ? styles.fromMe : styles.toMe}>
+                      {
+                        message.from !== this.props.user
+                        &&
+                        <UserImage user={message.from} />
+                      }
                       <Text>{message.content}</Text>
-                      <Button
-                        onPress={<Test />}
-                        title="Learn More"
-                        color="#841584"
-                        accessibilityLabel="Learn more about this purple button"
-                      />
-
-
                     </View>
                   )
                 }
@@ -83,7 +72,7 @@ export default class Posts extends React.Component {
             <Text>Loading...</Text>
         }
         <UserImage user={this.props.user} />
-        {/* <TextInput
+        <TextInput
           placeholder="To"
           value={this.state.to}
           onChangeText={to => this.setState({ to })}
@@ -96,7 +85,7 @@ export default class Posts extends React.Component {
         <Button
           onPress={() => this.handleAdd()}
           title="Send"
-        /> */}
+        />
         <Button
           onPress={() => this.handleLogout()}
           title="Logout"
