@@ -9,6 +9,7 @@ import Login from './Login'
 import Test from './test'
 import PostReceive from './postReceive'
 import Navigation from './navgation'
+import Screen1 from './screen1'
 import { StackNavigator } from 'react-navigation';
 
 
@@ -52,8 +53,8 @@ const RootStack = StackNavigator(
     Home: {
       screen: Navigation,
     },
-    Second: {
-      screen: Messages,
+    Messages: {
+      screen: Screen1,
     },
 
   },

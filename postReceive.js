@@ -69,10 +69,12 @@ export default class Posts extends React.Component {
 
                       <Text>{message.content}</Text>
                       <Button
-                        onPress={<Test />}
-                        title="Learn More"
-                        color="#841584"
-                        accessibilityLabel="Learn more about this purple button"
+                        title="Go to Second"
+                        onPress={() => this.props.navigation.navigate('Messages', {
+                          useremail: this.props.user
+                        }
+                        
+                        )}
                       />
 
 
@@ -99,10 +101,10 @@ export default class Posts extends React.Component {
           onPress={() => this.handleAdd()}
           title="Send"
         /> */}
-        <Button
+        {/* <Button
           onPress={() => this.handleLogout()}
           title="Logout"
-        />
+        /> */}
       </View>
     )
   }

@@ -4,6 +4,7 @@ import UserImage from './UserImage'
 import db from './db'
 import firebase from 'firebase'
 import 'firebase/firestore';
+import { StackNavigator } from 'react-navigation';
 
 export default class Messages extends React.Component {
 
@@ -11,12 +12,13 @@ export default class Messages extends React.Component {
     to: '',
     content: '',
     messages: null,
-    removeListener: null
+    removeListener: null,
+    user:''
   }
 
   async componentDidMount() {
 
-    const setListener = await db.collection('users').doc(this.props.user).collection('messages').onSnapshot(
+    const setListener = await db.collection('users').doc(this.state.user).collection('messages').onSnapshot(
       snap => {
         let messages = []
         snap.forEach(
@@ -34,15 +36,20 @@ export default class Messages extends React.Component {
   }
 
   async handleAdd() {
-    await db.collection('users').doc(this.props.user).collection('messages').add({ from: this.props.user, to: this.state.to, content: this.state.content })
-    await db.collection('users').doc(this.state.to).collection('messages').add({ from: this.props.user, to: this.state.to, content: this.state.content })
+    await db.collection('users').doc(this.state.user).collection('messages').add({ from: this.state.user, to: this.state.to, content: this.state.content })
+    await db.collection('users').doc(this.state.to).collection('messages').add({ from: this.state.user, to: this.state.to, content: this.state.content })
   }
+
   handleLogout() {
     firebase.auth().signOut()
-}
+  }
 
 
   render() {
+    const { params } = this.state.navigation.state;
+    const useremail = params ? params.useremail : null;
+    this.setState({user: useremail})
+
     return (
       <View style={styles.container}>
         <Text>Messages</Text>
@@ -55,12 +62,12 @@ export default class Messages extends React.Component {
               keyExtractor={message => message.id}
               renderItem={
                 message => {
-                  message = message.item 
+                  message = message.item
                   return (
                     <View key={message.id}
-                          style={message.from === this.props.user ? styles.fromMe : styles.toMe}>
+                      style={message.from === this.state.user ? styles.fromMe : styles.toMe}>
                       {
-                        message.from !== this.props.user
+                        message.from !== this.state.user
                         &&
                         <UserImage user={message.from} />
                       }
@@ -73,7 +80,7 @@ export default class Messages extends React.Component {
             :
             <Text>Loading...</Text>
         }
-        <UserImage user={this.props.user} />
+        <UserImage user={this.state.user} />
         <TextInput
           placeholder="To"
           value={this.state.to}
