@@ -41,6 +41,8 @@ export default class App extends React.Component {
             if (this.state.image) {
                 const result = await uploadImage(this.state.image, user.email)
             }
+            // await db.collection('userslist').add({ id: this.state.email })
+
             const { navigate } = this.props.navigation;
             navigate("Login", {screen: "Login"})
         }

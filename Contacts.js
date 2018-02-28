@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, TextInput, Button, ScrollView, Image, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, TextInput, Button, ScrollView, Image, TouchableOpacity,Alert } from 'react-native';
 import db from './db'
 import * as firebase from 'firebase';
 import 'firebase/firestore'
@@ -28,6 +28,7 @@ export default class Contacts extends React.Component {
                     })
                     this.setState({ contacts })
                 });
+                
     }
 
     render() {
@@ -37,6 +38,7 @@ export default class Contacts extends React.Component {
             <View style={styles.container}>
 
                 <Button title="Add Contact" onPress={() => navigate("AddContact", { user: this.props.navigation.state.params.user })} />
+                
                 <ScrollView>
                     {
                         this.state.contacts
@@ -64,7 +66,7 @@ export default class Contacts extends React.Component {
 
                             )
                             :
-                            <Text>No Contacts</Text>
+                            <Text>Loading...</Text>
                     }
                 </ScrollView>
 
