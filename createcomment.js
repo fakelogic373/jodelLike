@@ -7,7 +7,7 @@ import { pickImage, uploadImage } from './ImageUtils'
 import * as Aziz from 'native-base';
 import db from './db'
 
-export default class CreatePost extends React.Component {
+export default class CreateComment extends React.Component {
 
     state = {
         content: '',
@@ -19,15 +19,12 @@ export default class CreatePost extends React.Component {
 
 
 
-
     async handleSend() {
-        await db.collection('posts').doc('Qatar').collection('posts').add({
-            owner: this.props.navigation.state.params.user,
-            location: 'Qatar',
-            type:'text',
-            date: new Date().getDate,
-            content: this.state.content
-        })
+        await db.collection('posts').doc('Qatar').collection('posts').
+            doc(this.props.navigation.state.params.id).collection('comments').add({
+                username: this.props.navigation.state.params.user,
+                content: this.state.content
+            })
     }
 
 
@@ -43,7 +40,7 @@ export default class CreatePost extends React.Component {
 
 
                         <Aziz.Item floatingLabel>
-                            <Aziz.Label>Send a message here</Aziz.Label>
+                            <Aziz.Label>Send a comment here</Aziz.Label>
                             <Aziz.Input onChangeText={content => this.setState({ content })} />
                         </Aziz.Item>
 

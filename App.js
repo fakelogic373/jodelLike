@@ -12,6 +12,7 @@ import AddContact from './AddContacts'
 import PostsReceive from './postReceive'
 import PostComments from './postComments'
 import CreatePost from './createpost'
+import CreateComment from './createcomment'
 import { StackNavigator, } from 'react-navigation';
 
 
@@ -21,7 +22,6 @@ export default class App extends React.Component {
   }
 }
 
-
 const RootStack = StackNavigator({
   Login: { screen: Login },
   Register: { screen: Register },
@@ -30,7 +30,8 @@ const RootStack = StackNavigator({
   AddContact: { screen: AddContact },
   PostsReceive: {screen: PostsReceive },
   PostComments: {screen: PostComments},
-  CreatePost: {screen: CreatePost}
+  CreatePost: {screen: CreatePost},
+  CreateComment: {screen: CreateComment}
 },
   {
     initialRouteName: 'Login',

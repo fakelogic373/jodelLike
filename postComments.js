@@ -37,21 +37,21 @@ export default class Comments extends React.Component {
     // this.state.removeListener()
   }
 
-  //   async handleAdd() {
-  //     // await db.collection('users').doc(this.props.navigation.state.params.user).collection('posts').add({ from: this.props.navigation.state.params.user, to: this.state.to, content: this.state.content })
-  //     // await db.collection('users').doc(this.state.to).collection('posts').add({ from: this.props.navigation.state.params.user, to: this.state.to, content: this.state.content })
-  //     await db.collection('posts').doc(this.props.navigation.state.params.user).add({ from: this.props.navigation.state.params.user, to: this.state.to, content: this.state.content })
-  //     await db.collection('posts').doc(this.state.to).add({ from: this.props.navigation.state.params.user, to: this.state.to, content: this.state.content })
-  //   }
+ 
 
-  handleLogout() {
-    firebase.auth().signOut()
-  }
 
 
   render() {
     return (
       <View style={styles.container}>
+      <Button
+          title="Add a comment"
+          onPress={() => this.props.navigation.navigate('CreateComment', {
+            user: this.props.navigation.state.params.user,
+            id: this.props.navigation.state.params.id
+          }
+          )}
+        />
         <Text>comments</Text>
         {
           this.state.comments
@@ -62,7 +62,7 @@ export default class Comments extends React.Component {
               keyExtractor={comment => comment.id}
               renderItem={
                 comment => {
-                  comment = comment.item // because of FlatList
+                  comment = comment.item 
 
                   return (
                     <View key={comment.id} style={styles.toMe}>
@@ -80,6 +80,7 @@ export default class Comments extends React.Component {
             <Text>Loading...</Text>
         }
         <UserImage user={this.props.navigation.state.params.user} />
+        
         
       </View>
     )
