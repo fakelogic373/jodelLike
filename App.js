@@ -28,7 +28,6 @@ const RootStack = StackNavigator({
   Messages: { screen: Messages },
   AddContact: { screen: AddContact },
   PostsReceive: {screen: PostsReceive },
-  PostsReceive: {screen: PostsReceive },
   PostComments: {screen: PostComments}
 },
   {

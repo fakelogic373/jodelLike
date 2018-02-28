@@ -21,12 +21,18 @@ export default class Posts extends React.Component {
   }
 
   async componentDidMount() {
-    const setListener = await db.collection('users').doc(this.props.navigation.state.params.user).collection('postsreceive').onSnapshot(
+    const setListener = await db.collection('posts').doc('Qatar').collection('posts').onSnapshot(
       snap => {
         let posts = []
         snap.forEach(
           doc =>
-            posts.push({ id: doc.id, type: doc.data().type, location: doc.data().location, content: doc.data().content, date: doc.data().date })
+            posts.push({
+              id: doc.id,
+              owner: doc.data().owner,
+              date: doc.data().date,
+              type: doc.data().type,
+              content: doc.data().content,
+            })
         )
         this.setState({ posts })
       })
@@ -69,9 +75,10 @@ export default class Posts extends React.Component {
 
                       <Text>{message.content}</Text>
                       <Button
-                        title="Go to Second"
+                        title="Go to comment"
                         onPress={() => this.props.navigation.navigate('PostComments', {
-                          user: this.props.navigation.state.params.user
+                          user: this.props.navigation.state.params.user,
+                          id: message.id
                         }
                         )}
                       />
