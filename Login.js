@@ -34,7 +34,7 @@ export default class App extends React.Component {
 
 
         const { navigate } = this.props.navigation
-        navigate("PostsReceive", {user: user.email})
+        navigate("PostsList", {user: user.email})
         
     }
 

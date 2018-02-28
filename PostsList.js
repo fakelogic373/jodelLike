@@ -75,7 +75,7 @@ export default class Posts extends React.Component {
                       <Text>{message.content}</Text>
                       <Button
                         title="Go to comment"
-                        onPress={() => this.props.navigation.navigate('PostComments', {
+                        onPress={() => this.props.navigation.navigate('CommentsList', {
                           user: this.props.navigation.state.params.user,
                           id: message.id
                         }

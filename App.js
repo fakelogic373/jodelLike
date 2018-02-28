@@ -9,8 +9,8 @@ import Screen1 from './screen1'
 import Contacts from './Contacts'
 import Register from './Register'
 import AddContact from './AddContacts'
-import PostsReceive from './Posts'
-import PostComments from './Comments'
+import PostsList from './PostsList'
+import CommentsList from './CommentsList'
 import CreatePost from './createpost'
 import CreateComment from './createcomment'
 import { StackNavigator, } from 'react-navigation';
@@ -28,8 +28,8 @@ const RootStack = StackNavigator({
   Contacts: { screen: Contacts },
   Messages: { screen: Messages },
   AddContact: { screen: AddContact },
-  PostsReceive: {screen: PostsReceive },
-  PostComments: {screen: PostComments},
+  PostsList: {screen: PostsList },
+  CommentsList: {screen: CommentsList},
   CreatePost: {screen: CreatePost},
   CreateComment: {screen: CreateComment}
 },
