@@ -17,7 +17,6 @@ export default class Posts extends React.Component {
     removeListener: null,
     isClicked: null,
 
-
   }
 
   async componentDidMount() {
@@ -93,6 +92,16 @@ export default class Posts extends React.Component {
             <Text>Loading...</Text>
         }
         <UserImage user={this.props.navigation.state.params.user} />
+
+        <Button
+          title="Create a post"
+          onPress={() => this.props.navigation.navigate('CreatePost', {
+            user: this.props.navigation.state.params.user
+          }
+          )}
+        />
+
+
         {/* <TextInput
           placeholder="To"
           value={this.state.to}

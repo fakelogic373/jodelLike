@@ -11,6 +11,7 @@ import Register from './Register'
 import AddContact from './AddContacts'
 import PostsReceive from './postReceive'
 import PostComments from './postComments'
+import CreatePost from './createpost'
 import { StackNavigator, } from 'react-navigation';
 
 
@@ -28,7 +29,8 @@ const RootStack = StackNavigator({
   Messages: { screen: Messages },
   AddContact: { screen: AddContact },
   PostsReceive: {screen: PostsReceive },
-  PostComments: {screen: PostComments}
+  PostComments: {screen: PostComments},
+  CreatePost: {screen: CreatePost}
 },
   {
     initialRouteName: 'Login',
