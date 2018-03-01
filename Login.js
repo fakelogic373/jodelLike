@@ -28,13 +28,15 @@ export default class App extends React.Component {
         if (this.state.image) {
             const result = await uploadImage(this.state.image, user.email)
         }
+        
+
+
         // const { navigate } = this.props.navigation
-        // navigate("Contacts", {user: user.email})
-
-
+        // navigate("PostsList", {user: user.email})
 
         const { navigate } = this.props.navigation
-        navigate("PostsList", {user: user.email})
+        navigate("Contacts", {user: user.email})
+
         
     }
 
