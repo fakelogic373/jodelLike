@@ -25,6 +25,7 @@ export default class CreateComment extends React.Component {
                 username: this.props.navigation.state.params.user,
                 content: this.state.content
             })
+            this.props.navigation.goBack();
     }
 
 

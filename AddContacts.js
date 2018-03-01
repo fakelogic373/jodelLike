@@ -60,6 +60,7 @@ export default class AddContact extends React.Component {
         //     Alert.alert("Not a user of this app!")
         // }
         await db.collection('users').doc(this.props.navigation.state.params.user).collection('contacts').add({ id: this.state.email, name: this.state.name, email: this.state.email })
+        this.props.navigation.goBack();
         
   
 

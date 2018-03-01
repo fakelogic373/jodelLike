@@ -25,9 +25,10 @@ export default class CreatePost extends React.Component {
             owner: this.props.navigation.state.params.user,
             location: 'Qatar',
             type:'text',
-            date: new Date().getDate,
+            date: new Date().getDate(),
             content: this.state.content
         })
+        this.props.navigation.goBack();
     }
 
 
