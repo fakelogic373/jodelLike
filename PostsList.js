@@ -42,7 +42,7 @@ export default class Posts extends React.Component {
     console.log("loc XXX=" + temp.location)
 
 
-    const setListener = await db.collection('posts').doc(temp.location).collection('posts').onSnapshot(
+    const setListener = await db.collection('posts').doc(temp.location).collection('posts').orderBy("date", "desc").onSnapshot(
       snap => {
         let posts = []
         snap.forEach(
