@@ -20,7 +20,29 @@ export default class Posts extends React.Component {
   }
 
   async componentDidMount() {
-    const setListener = await db.collection('posts').doc('Qatar').collection('posts').onSnapshot(
+    // var temp;
+
+    // const userinfo = await db.collection('users').doc(this.props.navigation.state.params.user)
+    // userinfo.get().then(function (user) {
+    //   if (user.exists) {
+    //     console.log("data=", user.data());
+    //     temp = user.data();
+    //     console.log("data=", temp.location);
+    //   } else {
+    //     // doc.data() will be undefined in this case
+    //     console.log("No such document!");
+    //   }
+    // }).catch(function (error) {
+    //   console.log("Error getting document:", error);
+    // });
+
+    console.log("userinfo XXX=" + this.props.navigation.state.params.userinfo)
+    
+    var temp = this.props.navigation.state.params.userinfo
+    console.log("loc XXX=" + temp.location)
+
+
+    const setListener = await db.collection('posts').doc(temp.location).collection('posts').onSnapshot(
       snap => {
         let posts = []
         snap.forEach(
@@ -35,7 +57,10 @@ export default class Posts extends React.Component {
         )
         this.setState({ posts })
       })
-    this.setState({ setListener })
+
+
+
+    // this.setState({ setListener })
   }
 
   componentWillUnmount() {
@@ -71,6 +96,7 @@ export default class Posts extends React.Component {
 
                   return (
                     <View key={message.id} style={styles.toMe}>
+                      <Text>{message.owner}</Text>
 
                       <Text>{message.content}</Text>
                       <Button

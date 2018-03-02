@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View, TextInput, Button, ScrollView, TouchableOpacity } from 'react-native';
 import * as firebase from 'firebase';
 import 'firebase/firestore'
+import db from './db'
 import Messages from './Messages.js'
 import ImagePicker from 'react-native-image-picker'
 import Register from './Register'
@@ -20,7 +21,7 @@ export default class App extends React.Component {
     //     if (this.state.image) {
     //         const result = await uploadImage(this.state.image, user.email)
     //     }
-        
+
     // }
 
     handleLogin = async () => {
@@ -28,20 +29,46 @@ export default class App extends React.Component {
         if (this.state.image) {
             const result = await uploadImage(this.state.image, user.email)
         }
+
+        const { navigate } = this.props.navigation
+
+        var temp;
+
+        const userinfo = await db.collection('users').doc(user.email)
+        userinfo.get().then(function (doc) {
+            if (doc.exists) {
+                console.log("Document data:", doc.data());
+                navigate("PostsList", { user: user.email, userinfo: doc.data() })
+
+
+
+            } else {
+                // doc.data() will be undefined in this case
+                console.log("No such document!");
+            }
+        }).catch(function (error) {
+            console.log("Error getting document:", error);
+        });
+
         
+        
+
+
+        
+        
+
+
+
 
 
         // const { navigate } = this.props.navigation
-        // navigate("PostsList", {user: user.email})
+        // navigate("Contacts", {user: user.email})
 
-        const { navigate } = this.props.navigation
-        navigate("Contacts", {user: user.email})
 
-        
     }
 
     handleChangePage = () => {
-        this.setState({ flag: false})
+        this.setState({ flag: false })
     }
 
     render() {
