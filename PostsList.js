@@ -40,6 +40,7 @@ export default class Posts extends React.Component {
     
     var temp = this.props.navigation.state.params.userinfo
     console.log("loc XXX=" + temp.location)
+    this.setState({ location: temp.location})
 
 
     const setListener = await db.collection('posts').doc(temp.location).collection('posts').orderBy("date", "desc").onSnapshot(
@@ -83,9 +84,12 @@ export default class Posts extends React.Component {
     return (
       <View style={styles.container}>
         <Text>Posts</Text>
+        <Text>{this.state.location}</Text>
         {
           this.state.posts
             ?
+            
+            
             <FlatList
               style={styles.list}
               data={this.state.posts}
@@ -103,7 +107,8 @@ export default class Posts extends React.Component {
                         title="Go to comment"
                         onPress={() => this.props.navigation.navigate('CommentsList', {
                           user: this.props.navigation.state.params.user,
-                          id: message.id
+                          id: message.id,
+                          location: this.state.location
                         }
                         )}
                       />
@@ -114,6 +119,7 @@ export default class Posts extends React.Component {
                 }
               }
             />
+          
             :
             <Text>Loading...</Text>
         }

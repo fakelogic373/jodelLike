@@ -11,8 +11,6 @@ export default class CreateComment extends React.Component {
 
     state = {
         content: '',
-        location: '',
-        content: '',
         type: '',
         date: '',
     }
@@ -20,10 +18,11 @@ export default class CreateComment extends React.Component {
 
 
     async handleSend() {
-        await db.collection('posts').doc('Qatar').collection('posts').
+        await db.collection('posts').doc(this.props.navigation.state.params.location).collection('posts').
             doc(this.props.navigation.state.params.id).collection('comments').add({
                 username: this.props.navigation.state.params.user,
-                content: this.state.content
+                content: this.state.content,
+                date: new Date()
             })
             this.props.navigation.goBack();
     }

@@ -9,27 +9,28 @@ import { StackNavigator } from 'react-navigation';
 export default class Comments extends React.Component {
 
   state = {
-    username:'',
-    content:'',
+    username: '',
+    content: '',
     comments: null
 
   }
 
   async componentDidMount() {
-    const setListener = await db.collection('posts').doc('Qatar').collection('posts').
-    doc(this.props.navigation.state.params.id).collection('comments').onSnapshot(
-      snap => {
-        let comments = []
-        snap.forEach(
-          doc =>
-          comments.push({
-              id: doc.id,
-              username: doc.data().username,
-              content: doc.data().content
-            })
-        )
-        this.setState({ comments })
-      })
+    const setListener = await db.collection('posts').doc(this.props.navigation.state.params.location).collection('posts').
+      doc(this.props.navigation.state.params.id).collection('comments').orderBy('date').onSnapshot(
+        snap => {
+          let comments = []
+          snap.forEach(
+            doc =>
+              comments.push({
+                id: doc.id,
+                username: doc.data().username,
+                content: doc.data().content,
+
+              })
+          )
+          this.setState({ comments })
+        })
     // this.setState({ setListener })
   }
 
@@ -37,18 +38,19 @@ export default class Comments extends React.Component {
     // this.state.removeListener()
   }
 
- 
+
 
 
 
   render() {
     return (
       <View style={styles.container}>
-      <Button
+        <Button
           title="Add a comment"
           onPress={() => this.props.navigation.navigate('CreateComment', {
             user: this.props.navigation.state.params.user,
-            id: this.props.navigation.state.params.id
+            id: this.props.navigation.state.params.id,
+            location: this.props.navigation.state.params.location
           }
           )}
         />
@@ -62,13 +64,14 @@ export default class Comments extends React.Component {
               keyExtractor={comment => comment.id}
               renderItem={
                 comment => {
-                  comment = comment.item 
+                  comment = comment.item
 
                   return (
                     <View key={comment.id} style={styles.toMe}>
+                      <Text>{comment.username}</Text>
 
                       <Text>{comment.content}</Text>
-                      
+
 
 
                     </View>
@@ -80,8 +83,8 @@ export default class Comments extends React.Component {
             <Text>Loading...</Text>
         }
         <UserImage user={this.props.navigation.state.params.user} />
-        
-        
+
+
       </View>
     )
   }
