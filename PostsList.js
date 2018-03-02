@@ -37,10 +37,10 @@ export default class Posts extends React.Component {
     // });
 
     console.log("userinfo XXX=" + this.props.navigation.state.params.userinfo)
-    
+
     var temp = this.props.navigation.state.params.userinfo
     console.log("loc XXX=" + temp.location)
-    this.setState({ location: temp.location})
+    this.setState({ location: temp.location })
 
 
     const setListener = await db.collection('posts').doc(temp.location).collection('posts').orderBy("date", "desc").onSnapshot(
@@ -88,8 +88,8 @@ export default class Posts extends React.Component {
         {
           this.state.posts
             ?
-            
-            
+
+
             <FlatList
               style={styles.list}
               data={this.state.posts}
@@ -113,13 +113,28 @@ export default class Posts extends React.Component {
                         )}
                       />
 
+                      {
+                        this.props.navigation.state.params.user == message.owner
+                          ?
+                          <Button
+                            title="DeletePost"
+                            onPress={() => db.collection('posts').doc(this.state.location).collection('posts').
+                              doc(message.id).delete()
+                            }
+                          />
+                          :
+                          <Text />
+                      }
+
+
+
 
                     </View>
                   )
                 }
               }
             />
-          
+
             :
             <Text>Loading...</Text>
         }

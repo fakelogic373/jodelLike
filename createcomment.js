@@ -15,8 +15,6 @@ export default class CreateComment extends React.Component {
         date: '',
     }
 
-
-
     async handleSend() {
         await db.collection('posts').doc(this.props.navigation.state.params.location).collection('posts').
             doc(this.props.navigation.state.params.id).collection('comments').add({
