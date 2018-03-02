@@ -14,7 +14,7 @@ import CommentsList from './CommentsList'
 import CreatePost from './createpost'
 import CreateComment from './createcomment'
 import { StackNavigator, } from 'react-navigation';
-
+import Tabnav from './tabnav'
 
 export default class App extends React.Component {
   render() {
@@ -31,7 +31,8 @@ const RootStack = StackNavigator({
   PostsList: {screen: PostsList },
   CommentsList: {screen: CommentsList},
   CreatePost: {screen: CreatePost},
-  CreateComment: {screen: CreateComment}
+  CreateComment: {screen: CreateComment},
+  Tabnav: { screen: Tabnav}
 },
   {
     initialRouteName: 'Login',

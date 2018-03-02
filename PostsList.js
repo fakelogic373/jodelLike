@@ -5,6 +5,7 @@ import db from './db'
 import firebase from 'firebase'
 import Test from './test'
 import { StackNavigator } from 'react-navigation';
+import { TabNavigator } from 'react-navigation';
 
 export default class Posts extends React.Component {
 
@@ -198,3 +199,4 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-start'
   }
 });
+

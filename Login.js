@@ -38,7 +38,7 @@ export default class App extends React.Component {
         userinfo.get().then(function (doc) {
             if (doc.exists) {
                 console.log("Document data:", doc.data());
-                navigate("PostsList", { user: user.email, userinfo: doc.data() })
+                navigate("Tabnav", { user: user.email, userinfo: doc.data() })
 
 
 
