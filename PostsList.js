@@ -6,6 +6,7 @@ import firebase from 'firebase'
 import Test from './test'
 import { StackNavigator } from 'react-navigation';
 import { TabNavigator } from 'react-navigation';
+import Ads from './ads'
 
 export default class Posts extends React.Component {
 
@@ -17,6 +18,7 @@ export default class Posts extends React.Component {
     posts: null,
     removeListener: null,
     isClicked: null,
+    userinfo: null
 
   }
 
@@ -37,11 +39,12 @@ export default class Posts extends React.Component {
     //   console.log("Error getting document:", error);
     // });
 
-    console.log("userinfo XXX=" + this.props.navigation.state.params.userinfo)
+    // console.log("userinfo XXX=" + this.props.navigation.state.params.userinfo)
 
     var temp = this.props.navigation.state.params.userinfo
-    console.log("loc XXX=" + temp.location)
+    // console.log("loc XXX=" + temp.location)
     this.setState({ location: temp.location })
+    this.setState({ userinfo: temp })
 
 
     const setListener = await db.collection('posts').doc(temp.location).collection('posts').orderBy("date", "desc").onSnapshot(
@@ -69,12 +72,7 @@ export default class Posts extends React.Component {
     this.state.removeListener()
   }
 
-  //   async handleAdd() {
-  //     // await db.collection('users').doc(this.props.navigation.state.params.user).collection('posts').add({ from: this.props.navigation.state.params.user, to: this.state.to, content: this.state.content })
-  //     // await db.collection('users').doc(this.state.to).collection('posts').add({ from: this.props.navigation.state.params.user, to: this.state.to, content: this.state.content })
-  //     await db.collection('posts').doc(this.props.navigation.state.params.user).add({ from: this.props.navigation.state.params.user, to: this.state.to, content: this.state.content })
-  //     await db.collection('posts').doc(this.state.to).add({ from: this.props.navigation.state.params.user, to: this.state.to, content: this.state.content })
-  //   }
+
 
   handleLogout() {
     firebase.auth().signOut()
@@ -139,7 +137,8 @@ export default class Posts extends React.Component {
             :
             <Text>Loading...</Text>
         }
-        <UserImage user={this.props.navigation.state.params.user} />
+        <UserImage userinfo={this.props.navigation.state.params.user} />
+
 
         <Button
           title="Create a post"
@@ -148,6 +147,16 @@ export default class Posts extends React.Component {
           }
           )}
         />
+
+        {
+          this.state.userinfo
+          ?
+          <Ads userinfo={this.state.userinfo} />
+          :
+          <Text >default ad</Text>
+        }
+
+        
 
 
         {/* <TextInput
