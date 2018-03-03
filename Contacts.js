@@ -37,10 +37,10 @@ export default class Contacts extends React.Component {
         const { navigate } = this.props.navigation
 
         return (
-            
+
             <Aziz.Container>
                 {/* md-person-add */}
-                
+
                 <View style={styles.container}>
 
                     {/* <Button title="Add a Contact"  /> */}
@@ -51,10 +51,12 @@ export default class Contacts extends React.Component {
                                 ?
                                 this.state.contacts.map(
                                     contact =>
-                                        <TouchableOpacity key={contact.email} onPress={() => navigate("Messages", { 
+                                        <TouchableOpacity key={contact.email} onPress={() => navigate("Messages", {
                                             user: this.props.navigation.state.params.user,
-                                             to: contact.email, contactname: contact.name })}>
-                                             
+                                            to: contact.email, contactname: contact.name
+
+                                        })}>
+
                                             <View style={styles.contactContainer}>
                                                 <View style={{ flexDirection: 'column', flex: 0.2 }}>
                                                     <UserImage user={contact.email} />
@@ -74,7 +76,7 @@ export default class Contacts extends React.Component {
                                             </View>
                                         </TouchableOpacity>
 
-                                        
+
                                 )
                                 :
                                 <View style={{ alignItems: 'center', justifyContent: 'center', paddingTop: 200 }}>
@@ -84,20 +86,20 @@ export default class Contacts extends React.Component {
                     </ScrollView>
 
                     <View style={{ flex: 1 }}>
-                    <Aziz.Fab
-                        active={this.state.active}
-                        direction="up"
-                        containerStyle={{ paddingBottom: 20}}
-                        style={{ backgroundColor: '#5067FF' }}
-                        position="bottomRight"
-                        onPress={() => this.setState({ active: !this.state.active })}>
-                        <Aziz.Icon name="ios-more" />
+                        <Aziz.Fab
+                            active={this.state.active}
+                            direction="up"
+                            containerStyle={{ paddingBottom: 20 }}
+                            style={{ backgroundColor: '#5067FF' }}
+                            position="bottomRight"
+                            onPress={() => this.setState({ active: !this.state.active })}>
+                            <Aziz.Icon name="ios-more" />
 
-                        <Aziz.Button style={{ backgroundColor: '#3B5998' }} onPress={() => navigate("AddContact", { user: this.props.navigation.state.params.user })}>
-                            <Aziz.Icon name="md-person-add" />
-                        </Aziz.Button>
+                            <Aziz.Button style={{ backgroundColor: '#3B5998' }} onPress={() => navigate("AddContact", { user: this.props.navigation.state.params.user })}>
+                                <Aziz.Icon name="md-person-add" />
+                            </Aziz.Button>
 
-                    </Aziz.Fab>
+                        </Aziz.Fab>
                     </View>
 
 

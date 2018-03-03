@@ -27,17 +27,17 @@ export default class AddContact extends React.Component {
 
     async componentDidMount() {
         const setListener = await db.collection('users').onSnapshot(
-          snap => {
-            let existingUsers = []
-            snap.forEach(
-              doc =>
-              existingUsers.push({ id: doc.id})
-            )
-            this.setState({ existingUsers })
-          })
-          
-          
-      }
+            snap => {
+                let existingUsers = []
+                snap.forEach(
+                    doc =>
+                        existingUsers.push({ id: doc.id })
+                )
+                this.setState({ existingUsers })
+            })
+
+
+    }
 
     // listenForItems() {
     //     db.collection('users')
@@ -64,8 +64,8 @@ export default class AddContact extends React.Component {
         // }
         await db.collection('users').doc(this.props.navigation.state.params.user).collection('contacts').add({ id: this.state.email, name: this.state.name, email: this.state.email })
         this.props.navigation.goBack();
-        
-  
+
+
 
     }
 
@@ -75,14 +75,14 @@ export default class AddContact extends React.Component {
 
         return (
             // <View style={styles.container}>
-            
+
             //     <TextInput style={styles.inputBoxes} autoCapitalize="none" placeholder="name" onChangeText={name => this.setState({ name })} />
             //     <TextInput style={styles.inputBoxes} autoCapitalize="none" placeholder="email" onChangeText={email => this.setState({ email })} />
             //     <TouchableOpacity style={styles.contactbutton} onPress={() => this.handleAddContact()} >
             //         <Text style={styles.contactbuttontext}>ADD</Text>
             //     </TouchableOpacity>
             //     <Button title="test: show me a user" onPress={() => Alert.alert(this.state.existingUsers[4].id) }/>
-                
+
             // </View>
 
             <Aziz.Container>

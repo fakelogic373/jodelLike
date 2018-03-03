@@ -24,7 +24,10 @@ export default class UserImage extends React.Component {
                 source={{uri: this.state.image}}
             />
             :
-            null
+            <Image 
+                style={{ width: 50, height: 50, borderRadius: 25 }}
+                source={require('./images/default.gif')}
+            />
         )
             }
 }

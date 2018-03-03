@@ -9,7 +9,8 @@ import { Ionicons } from '@expo/vector-icons';
 
 export default TabNavigator({
   Posts: { screen: PostsList },
-  Messages: { screen: Contacts },
+  Contacts: { screen: Contacts },
+  
 },
 {
   navigationOptions: ({ navigation }) => ({
