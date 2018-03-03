@@ -6,7 +6,8 @@ import db from './db'
 export default class Ads extends React.Component {
 
     state = {
-        ads: null
+        ads: null,
+        num:0
     }
 
     async componentDidMount() {
@@ -24,8 +25,12 @@ export default class Ads extends React.Component {
                             })
                     )
                     console.log("ads =" + ads)
-                    this.setState({ ads })
+                    let num = Math.random() * (ads.length - 0) + 0;
+                    num = Math.floor(num);
+                    console.log(num)
+                    this.setState({ ads, num })
                 })
+
     }
 
     render() {
@@ -38,7 +43,8 @@ export default class Ads extends React.Component {
                     
                     this.state.ads
                         ?
-                        <Text>{this.state.ads[1].name}</Text>
+                        <Text>{this.state.ads[this.state.num].name}</Text>
+                        
                         :
                         <Text>loading ad</Text>
                 }

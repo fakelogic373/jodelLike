@@ -137,7 +137,7 @@ export default class Posts extends React.Component {
             :
             <Text>Loading...</Text>
         }
-        <UserImage userinfo={this.props.navigation.state.params.user} />
+        {/* <UserImage userinfo={this.props.navigation.state.params.user} /> */}
 
 
         <Button
