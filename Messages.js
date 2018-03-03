@@ -8,7 +8,7 @@ import * as Aziz from 'native-base';
 
 export default class Messages extends React.Component {
 
-  
+
 
   static navigationOptions = ({ navigation }) => {
     return {
@@ -27,8 +27,14 @@ export default class Messages extends React.Component {
       snap => {
         let messages = []
         snap.forEach(
-          doc =>
-            messages.push({ id: doc.id, from: doc.data().from, to: doc.data().to, content: doc.data().content })
+          doc => {
+            if (doc.data().to == this.props.navigation.state.params.to || doc.data().from == this.props.navigation.state.params.to) {
+              messages.push({ id: doc.id, from: doc.data().from, to: doc.data().to, content: doc.data().content })
+
+            }
+
+          }
+
         )
         this.setState({ messages })
       })
@@ -51,66 +57,66 @@ export default class Messages extends React.Component {
   render() {
     return (
 
-      
-<ImageBackground source={require('./images/ChatBackGround.jpg')} style={styles.container}>
-      <Aziz.Container>
-        
-        <Aziz.Content>
-          {
-            this.state.messages
-              ?
-              <FlatList
-                style={styles.list}
-                data={this.state.messages}
-                keyExtractor={message => message.id}
-                renderItem={
-                  message => {
-                    message = message.item // because of FlatList
-                    return (
-                      <Aziz.Button rounded key={message.id}
-                        style={message.from === this.props.navigation.state.params.user ? styles.fromMe : styles.toMe}>
-                        {
-                          message.from !== this.props.navigation.state.params.user
-                          &&
-                          <UserImage user={message.from} />
-                        }
-                        <Aziz.Text style={{ color: 'black' }}>{message.content}</Aziz.Text>
-                      </Aziz.Button>
-                    )
+
+      <ImageBackground source={require('./images/ChatBackGround.jpg')} style={styles.container}>
+        <Aziz.Container>
+
+          <Aziz.Content>
+            {
+              this.state.messages
+                ?
+                <FlatList
+                  style={styles.list}
+                  data={this.state.messages}
+                  keyExtractor={message => message.id}
+                  renderItem={
+                    message => {
+                      message = message.item // because of FlatList
+                      return (
+                        <Aziz.Button rounded key={message.id}
+                          style={message.from === this.props.navigation.state.params.user ? styles.fromMe : styles.toMe}>
+                          {
+                            message.from !== this.props.navigation.state.params.user
+                            &&
+                            <UserImage user={message.from} />
+                          }
+                          <Aziz.Text style={{ color: 'black' }}>{message.content}</Aziz.Text>
+                        </Aziz.Button>
+                      )
+                    }
                   }
-                }
-                
-              />
-              :
-              <View style={{ alignItems: 'center', justifyContent: 'center', paddingTop: 200 }}>
-                <Image style={{ width: 100, height: 100 }} source={require('./loading.gif')} />
-              </View>
-          }
-        </Aziz.Content>
-        
 
-
-        <Aziz.Footer>
-
-          <Aziz.Content style={{ paddingTop: 10 }}>
-
-            <Aziz.Item rounded style={{ height: 40 }}>
-
-              <UserImage user={this.props.navigation.state.params.user} />
-
-              <Aziz.Input placeholder=' Send Message ...' onChangeText={content => this.setState({ content })} />
-
-              <Aziz.Button rounded Right autoCapitalize='none' autoCorrect={false} style={{ height: 39, backgroundColor: 'green' }} onPress={() => this.handleAdd()}>
-                <Aziz.Icon active name="ios-paper-plane" />
-              </Aziz.Button>
-
-            </Aziz.Item>
-
+                />
+                :
+                <View style={{ alignItems: 'center', justifyContent: 'center', paddingTop: 200 }}>
+                  <Image style={{ width: 100, height: 100 }} source={require('./loading.gif')} />
+                </View>
+            }
           </Aziz.Content>
 
-        </Aziz.Footer>
 
-      </Aziz.Container>
+
+          <Aziz.Footer>
+
+            <Aziz.Content style={{ paddingTop: 10 }}>
+
+              <Aziz.Item rounded style={{ height: 40 }}>
+
+                <UserImage user={this.props.navigation.state.params.user} />
+
+                <Aziz.Input placeholder=' Send Message ...' onChangeText={content => this.setState({ content })} />
+
+                <Aziz.Button rounded Right autoCapitalize='none' autoCorrect={false} style={{ height: 39, backgroundColor: 'green' }} onPress={() => this.handleAdd()}>
+                  <Aziz.Icon active name="ios-paper-plane" />
+                </Aziz.Button>
+
+              </Aziz.Item>
+
+            </Aziz.Content>
+
+          </Aziz.Footer>
+
+        </Aziz.Container>
       </ImageBackground>
 
     )

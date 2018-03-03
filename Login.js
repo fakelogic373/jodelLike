@@ -12,7 +12,7 @@ import * as Aziz from 'native-base';
 export default class App extends React.Component {
 
     state = {
-        email: '1@1.com',
+        email: '2@2.com',
         password: '123456'
         // flag: true
     }
