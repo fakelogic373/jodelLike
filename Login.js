@@ -12,10 +12,9 @@ import * as Aziz from 'native-base';
 export default class App extends React.Component {
 
     state = {
-        email: '4@2.com',
+        email: '4@6.com',
         password: '123456'
     }
-
 
     handleLogin = async () => {
         const user = await firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
@@ -25,7 +24,6 @@ export default class App extends React.Component {
 
         const { navigate } = this.props.navigation
 
-        var temp;
 
         const userinfo = await db.collection('users').doc(user.email)
         userinfo.get().then(function (doc) {

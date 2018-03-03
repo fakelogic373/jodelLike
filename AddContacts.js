@@ -19,9 +19,6 @@ export default class AddContact extends React.Component {
         name: '',
 
     }
-    // componentDidMount() {
-    //     this.listenForItems()
-    // }
 
 
 
@@ -55,15 +52,26 @@ export default class AddContact extends React.Component {
 
 
     async handleAddContact() {
-        // let checkIfExists = this.state.existingUsers.findIndex(e => e.id == this.state.email)
-        // if (checkIfExists >= 0) {
-        //     await db.collection('users').doc(this.props.navigation.state.params.user).collection('contacts').add({ name: this.state.name, email: this.state.email })
-        // }
-        // else {
-        //     Alert.alert("Not a user of this app!")
-        // }
-        await db.collection('users').doc(this.props.navigation.state.params.user).collection('contacts').add({ id: this.state.email, name: this.state.name, email: this.state.email })
-        this.props.navigation.goBack();
+        let checkIfExists = this.state.existingUsers.findIndex(item => item.id == this.state.email)
+        if (checkIfExists >= 0) {
+            await db.collection('users').doc(this.props.navigation.state.params.user).collection('contacts').add({
+                id: this.state.email,
+                name: this.state.name,
+                email: this.state.email
+            })
+
+            await db.collection('users').doc(this.state.email).collection('contacts').add({
+                id: this.props.navigation.state.params.user,
+                name: this.props.navigation.state.params.user,
+                email: this.props.navigation.state.params.user
+            })
+
+            this.props.navigation.goBack();
+        }
+        else {
+            Alert.alert("user not found")
+        }
+
 
 
 

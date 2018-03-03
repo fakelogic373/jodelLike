@@ -26,13 +26,10 @@ export default class Ads extends React.Component {
                     console.log("ads =" + ads)
                     this.setState({ ads })
                 })
-
     }
-
 
     render() {
         
-
         return (
             <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: 'pink' }}>
                 <Text> Screen 1 </Text>
