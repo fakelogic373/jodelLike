@@ -4,6 +4,9 @@ import db from './db'
 import * as firebase from 'firebase';
 import 'firebase/firestore'
 import UserImage from './UserImage'
+import * as Aziz from 'native-base';
+
+
 export default class AddContact extends React.Component {
     static navigationOptions = ({ navigation }) => {
         return {
@@ -12,7 +15,7 @@ export default class AddContact extends React.Component {
     };
     state = {
         existingUsers: null,
-        number: '',
+        email: '',
         name: '',
 
     }
@@ -71,17 +74,55 @@ export default class AddContact extends React.Component {
 
 
         return (
-            <View style={styles.container}>
+            // <View style={styles.container}>
             
-                {/* <Image source={require('./profile.png')} style={{ height: 100, width: 100 }} /> */}
-                <TextInput style={styles.inputBoxes} autoCapitalize="none" placeholder="name" onChangeText={name => this.setState({ name })} />
-                <TextInput style={styles.inputBoxes} autoCapitalize="none" placeholder="email" onChangeText={email => this.setState({ email })} />
-                <TouchableOpacity style={styles.contactbutton} onPress={() => this.handleAddContact()} >
-                    <Text style={styles.contactbuttontext}>ADD</Text>
-                </TouchableOpacity>
-                <Button title="test: show me a user" onPress={() => Alert.alert(this.state.existingUsers[4].id) }/>
+            //     <TextInput style={styles.inputBoxes} autoCapitalize="none" placeholder="name" onChangeText={name => this.setState({ name })} />
+            //     <TextInput style={styles.inputBoxes} autoCapitalize="none" placeholder="email" onChangeText={email => this.setState({ email })} />
+            //     <TouchableOpacity style={styles.contactbutton} onPress={() => this.handleAddContact()} >
+            //         <Text style={styles.contactbuttontext}>ADD</Text>
+            //     </TouchableOpacity>
+            //     <Button title="test: show me a user" onPress={() => Alert.alert(this.state.existingUsers[4].id) }/>
                 
-            </View>
+            // </View>
+
+            <Aziz.Container>
+
+                {/* CONTENT */}
+                <Aziz.Content>
+
+                    <Aziz.Form>
+
+
+                        <Aziz.Item floatingLabel>
+                            <Aziz.Label>Name</Aziz.Label>
+                            <Aziz.Input autoCapitalize='none' autoCorrect={false} onChangeText={name => this.setState({ name })} />
+                        </Aziz.Item>
+
+                        <Aziz.Item floatingLabel>
+                            <Aziz.Label>Email</Aziz.Label>
+                            <Aziz.Input autoCapitalize='none' autoCorrect={false} onChangeText={email => this.setState({ email })} />
+                        </Aziz.Item>
+
+                        <View style={{ padding: 40, alignItems: 'center', justifyContent: 'center' }}>
+                            <Aziz.Button block success iconLeft onPress={() => this.handleAddContact()}>
+                                <Aziz.Icon name='person-add' />
+                                <Aziz.Text>Add Contact</Aziz.Text>
+                            </Aziz.Button>
+                        </View>
+
+
+
+                    </Aziz.Form>
+
+                </Aziz.Content>
+
+                {/* FOOTER */}
+                <Aziz.Footer>
+
+
+                </Aziz.Footer>
+
+            </Aziz.Container>
         )
     }
 }

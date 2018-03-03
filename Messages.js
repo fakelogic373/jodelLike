@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, TextInput, Button, ScrollView, Image, FlatList } from 'react-native';
+import { StyleSheet, Text, View, TextInput, Button, ScrollView, Image, FlatList, ImageBackground } from 'react-native';
 import db from './db'
 import firebase from 'firebase';
 import UserImage from './UserImage'
@@ -8,6 +8,14 @@ import * as Aziz from 'native-base';
 
 export default class Messages extends React.Component {
 
+  
+
+  static navigationOptions = ({ navigation }) => {
+    return {
+      title: ``,
+    }
+  };
+
   state = {
     messages: null,
     to: '',
@@ -15,7 +23,7 @@ export default class Messages extends React.Component {
     removeListener: null
   }
   async componentDidMount() {
-    const setListener = await db.collection('users').doc(this.props.navigation.state.params.user).collection('messages').onSnapshot(
+    const setListener = await db.collection('users').doc(this.props.navigation.state.params.user).collection('messages').orderBy("date").onSnapshot(
       snap => {
         let messages = []
         snap.forEach(
@@ -32,8 +40,8 @@ export default class Messages extends React.Component {
   }
 
   async handleAdd() {
-    await db.collection('users').doc(this.props.navigation.state.params.user).collection('messages').add({ from: this.props.navigation.state.params.user, to: this.props.navigation.state.params.to, content: this.state.content })
-    await db.collection('users').doc(this.props.navigation.state.params.to).collection('messages').add({ from: this.props.navigation.state.params.user, to: this.props.navigation.state.params.to, content: this.state.content })
+    await db.collection('users').doc(this.props.navigation.state.params.user).collection('messages').add({ from: this.props.navigation.state.params.user, to: this.props.navigation.state.params.to, content: this.state.content, date: new Date() })
+    await db.collection('users').doc(this.props.navigation.state.params.to).collection('messages').add({ from: this.props.navigation.state.params.user, to: this.props.navigation.state.params.to, content: this.state.content, date: new Date() })
   }
 
   handleLogout() {
@@ -42,23 +50,11 @@ export default class Messages extends React.Component {
 
   render() {
     return (
+
+      
+<ImageBackground source={require('./images/ChatBackGround.jpg')} style={styles.container}>
       <Aziz.Container>
-
-        <Aziz.Header>
-          <Aziz.Left />
-
-          <Aziz.Body>
-            <Aziz.Title>Chat</Aziz.Title>
-          </Aziz.Body>
-
-          <Aziz.Right>
-            <Aziz.Button transparent>
-              <Aziz.Text onPress={() => this.handleLogout()} style={{ color: 'blue' }}>Logout</Aziz.Text>
-            </Aziz.Button>
-          </Aziz.Right>
-
-        </Aziz.Header>
-
+        
         <Aziz.Content>
           {
             this.state.messages
@@ -83,6 +79,7 @@ export default class Messages extends React.Component {
                     )
                   }
                 }
+                
               />
               :
               <View style={{ alignItems: 'center', justifyContent: 'center', paddingTop: 200 }}>
@@ -90,6 +87,7 @@ export default class Messages extends React.Component {
               </View>
           }
         </Aziz.Content>
+        
 
 
         <Aziz.Footer>
@@ -100,7 +98,7 @@ export default class Messages extends React.Component {
 
               <UserImage user={this.props.navigation.state.params.user} />
 
-              <Aziz.Input placeholder='Send Message' onChangeText={content => this.setState({ content })} />
+              <Aziz.Input placeholder=' Send Message ...' onChangeText={content => this.setState({ content })} />
 
               <Aziz.Button rounded Right autoCapitalize='none' autoCorrect={false} style={{ height: 39, backgroundColor: 'green' }} onPress={() => this.handleAdd()}>
                 <Aziz.Icon active name="ios-paper-plane" />
@@ -113,22 +111,8 @@ export default class Messages extends React.Component {
         </Aziz.Footer>
 
       </Aziz.Container>
+      </ImageBackground>
 
-
-      //   {/* ////////////////////////////////// TO ////////////////////////////////// */}
-      //    {/* <View style={styles.container}>
-
-      //   <View style={{ borderColor: 'black', borderWidth: 1, borderRadius: 5, width: 300, height: 30, margin: 5 }}>
-      //     <View style={{ alignContent: 'center', justifyContent: 'center' }}>
-      //       <TextInput autoCapitalize='none' autoCorrect={false} style={{ paddingLeft: 140, width: 290, paddingTop: 5, alignContent: 'center', justifyContent: 'center' }}
-      //         placeholder="To"
-      //         value={this.props.navigation.state.params.to}
-      //         onChangeText={(to) => this.setState({ to: to })}
-      //       />
-      //     </View>
-      //   </View>
-
-      // </View> */}
     )
   }
 }
@@ -137,8 +121,16 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#ece5dd',
-    alignItems: 'center',
-    justifyContent: 'center',
+    //alignItems: 'center',
+    //justifyContent: 'center',
+    //flex: 1,
+    width: null,
+    height: null,
+    backgroundColor: 'transparent',
+
+  },
+  background: {
+
   },
   list: {
     width: '100%'
@@ -148,6 +140,10 @@ const styles = StyleSheet.create({
     margin: 10,
     backgroundColor: '#dcf8c8',
     alignSelf: 'flex-end',
+    borderTopLeftRadius: 30,
+    borderTopRightRadius: 30,
+    borderBottomLeftRadius: 30,
+    borderBottomRightRadius: 5
   },
   toMe: {
     flexDirection: 'row',
@@ -155,5 +151,9 @@ const styles = StyleSheet.create({
     margin: 10,
     backgroundColor: '#FAE5D3',
     alignSelf: 'flex-start',
+    borderTopLeftRadius: 30,
+    borderTopRightRadius: 30,
+    borderBottomLeftRadius: 5,
+    borderBottomRightRadius: 30
   }
 });

@@ -11,9 +11,16 @@ import * as Aziz from 'native-base';
 
 export default class App extends React.Component {
 
+    static navigationOptions = {
+        title: 'Register',
+      };
+
     state = {
         email: '',
         password: '',
+        age: '',
+        gender: '',
+        location: '',
         passwordConfirm: '',
         image: null
     }
@@ -36,7 +43,7 @@ export default class App extends React.Component {
                 this.setState({ image: await pickImage() })
             }
             const user = await firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password)
-            await db.collection("users").doc(this.state.email).set({name: this.state.name})
+            await db.collection("users").doc(this.state.email).set({name: this.state.name, age: this.state.age, gender: this.state.gender, location: this.state.location})
 
             if (this.state.image) {
                 const result = await uploadImage(this.state.image, user.email)
@@ -71,6 +78,21 @@ export default class App extends React.Component {
                         </Aziz.Item>
 
                         <Aziz.Item floatingLabel>
+                            <Aziz.Label>Age</Aziz.Label>
+                            <Aziz.Input onChangeText={age => this.setState({ age })} />
+                        </Aziz.Item>
+
+                        <Aziz.Item floatingLabel>
+                            <Aziz.Label>Gender</Aziz.Label>
+                            <Aziz.Input onChangeText={gender => this.setState({ gender })} />
+                        </Aziz.Item>
+
+                        <Aziz.Item floatingLabel>
+                            <Aziz.Label>Location</Aziz.Label>
+                            <Aziz.Input onChangeText={location => this.setState({ location })} />
+                        </Aziz.Item>
+
+                        <Aziz.Item floatingLabel>
                             <Aziz.Label>Password</Aziz.Label>
                             <Aziz.Input secureTextEntry onChangeText={password => this.setState({ password })} />
                         </Aziz.Item>
@@ -82,7 +104,7 @@ export default class App extends React.Component {
 
                         <View style={{ paddingTop: 30, paddingRight: 80, paddingLeft: 80 }}>
                             <Aziz.Button onPress={() => this.handlePickImage()} bordered info iconLeft>
-                                <Aziz.Icon name='camera' />
+                                <Aziz.Icon name='ios-images' />
                                 <Aziz.Text>Choose an Image     </Aziz.Text>
                             </Aziz.Button>
                         </View>

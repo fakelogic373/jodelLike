@@ -12,8 +12,8 @@ import * as Aziz from 'native-base';
 export default class App extends React.Component {
 
     state = {
-        email: '',
-        password: ''
+        email: '1@1.com',
+        password: '123456'
         // flag: true
     }
     // async handleLogin () {
@@ -101,11 +101,11 @@ export default class App extends React.Component {
                             </Aziz.Button>
                         </View>
 
-                        <View style={{ padding: 40, alignItems: 'center', justifyContent: 'center' }}>
+                        {/* <View style={{ padding: 40, alignItems: 'center', justifyContent: 'center' }}>
                             <Aziz.Button block success iconLeft onPress={() => this.props.navigation.navigate('Register')}>
                                 <Aziz.Text>Register </Aziz.Text>
                             </Aziz.Button>
-                        </View>
+                        </View> */}
 
 
 
@@ -115,6 +115,12 @@ export default class App extends React.Component {
 
                 {/* FOOTER */}
                 <Aziz.Footer>
+
+                    <View style={{ padding: 40, alignItems: 'center', justifyContent: 'center' }}>
+                        <Aziz.Button full transparent info onPress={() => this.props.navigation.navigate('Register')}>
+                            <Aziz.Text>You Don't Have an Account?</Aziz.Text>
+                        </Aziz.Button>
+                    </View>
 
                 </Aziz.Footer>
 

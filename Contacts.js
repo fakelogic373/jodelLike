@@ -1,9 +1,11 @@
 import React from 'react';
-import { StyleSheet, Text, View, TextInput, Button, ScrollView, Image, TouchableOpacity,Alert } from 'react-native';
+import { StyleSheet, Text, View, TextInput, Button, ScrollView, Image, TouchableOpacity, Alert } from 'react-native';
 import db from './db'
 import * as firebase from 'firebase';
 import 'firebase/firestore'
 import UserImage from './UserImage'
+import * as Aziz from 'native-base';
+
 export default class Contacts extends React.Component {
     static navigationOptions = ({ navigation }) => {
         return {
@@ -12,7 +14,7 @@ export default class Contacts extends React.Component {
     };
     state = {
         contacts: null,
-        user: 'anu@anu.com',
+        user: '',
     }
     componentDidMount() {
         this.listenForItems()
@@ -28,72 +30,79 @@ export default class Contacts extends React.Component {
                     })
                     this.setState({ contacts })
                 });
-                
+
     }
 
     render() {
         const { navigate } = this.props.navigation
 
         return (
-            <View style={styles.container}>
-
-                <Button title="Add Contact" onPress={() => navigate("AddContact", { user: this.props.navigation.state.params.user })} />
+            
+            <Aziz.Container>
+                {/* md-person-add */}
                 
-                <ScrollView>
-                    {
-                        this.state.contacts
-                            ?
-                            this.state.contacts.map(
-                                contact =>
-                                    <TouchableOpacity key={contact.email} onPress={() => navigate("Messages", { user: this.props.navigation.state.params.user, to: contact.email, contactname: contact.name })}>
-                                        <View style={styles.contactContainer}>
-                                            <View style={{ flexDirection: 'column', flex: 0.2 }}>
-                                                {/* <Image source={require('./mycontact.png')} style={{ width: 35, height: 35, margin: 0 }} /> */}
-                                                <UserImage user={contact.email} style={{ width: 35, height: 35 }} />
+                <View style={styles.container}>
+
+                    {/* <Button title="Add a Contact"  /> */}
+
+                    <ScrollView>
+                        {
+                            this.state.contacts
+                                ?
+                                this.state.contacts.map(
+                                    contact =>
+                                        <TouchableOpacity key={contact.email} onPress={() => navigate("Messages", { 
+                                            user: this.props.navigation.state.params.user,
+                                             to: contact.email, contactname: contact.name })}>
+                                             
+                                            <View style={styles.contactContainer}>
+                                                <View style={{ flexDirection: 'column', flex: 0.2 }}>
+                                                    <UserImage user={contact.email} />
+                                                </View>
+
+                                                <View style={{ flexDirection: 'column', flex: 0.6, justifyContent: 'center' }}>
+                                                    <Text style={styles.contactContainerTxt}>
+                                                        {contact.name}
+                                                    </Text>
+                                                </View>
+
+                                                <View style={{ flexDirection: 'column', flex: 0.2 }}>
+                                                    {/* <Image source={require('./right.png')} style={{ width: 30, height: 30, margin: 0 }} /> */}
+                                                    <Aziz.Icon name="ios-return-right" />
+                                                </View>
 
                                             </View>
-                                            <View style={{ flexDirection: 'column', flex: 0.6, justifyContent: 'center' }}>
-                                                <Text style={styles.contactContainerTxt}>
-                                                    {contact.name}
-                                                </Text>
-                                            </View>
-                                            <View style={{ flexDirection: 'column', flex: 0.2 }}>
-                                                {/* <Image source={require('./right.png')} style={{ width: 30, height: 30, margin: 0 }} /> */}
-                                            </View>
+                                        </TouchableOpacity>
 
-                                        </View>
-                                    </TouchableOpacity>
+                                        
+                                )
+                                :
+                                <View style={{ alignItems: 'center', justifyContent: 'center', paddingTop: 200 }}>
+                                    <Image style={{ width: 100, height: 100 }} source={require('./loading.gif')} />
+                                </View>
+                        }
+                    </ScrollView>
 
-                            )
-                            :
-                            <Text>Loading...</Text>
-                    }
-                </ScrollView>
+                    <View style={{ flex: 1 }}>
+                    <Aziz.Fab
+                        active={this.state.active}
+                        direction="up"
+                        containerStyle={{ paddingBottom: 20}}
+                        style={{ backgroundColor: '#5067FF' }}
+                        position="bottomRight"
+                        onPress={() => this.setState({ active: !this.state.active })}>
+                        <Aziz.Icon name="ios-more" />
+
+                        <Aziz.Button style={{ backgroundColor: '#3B5998' }} onPress={() => navigate("AddContact", { user: this.props.navigation.state.params.user })}>
+                            <Aziz.Icon name="md-person-add" />
+                        </Aziz.Button>
+
+                    </Aziz.Fab>
+                    </View>
 
 
-                <View style={styles.bottomContainer}>
-                    <View style={{ flexDirection: 'column', marginRight: 15 }}>
-                        <TouchableOpacity>
-                            <Text style={styles.contactContainerTxt}>Status</Text>
-                        </TouchableOpacity>
-                    </View>
-                    <View style={{ flexDirection: 'column', marginRight: 15 }}>
-                        <TouchableOpacity>
-                            <Text style={styles.contactContainerTxt}>Favorites</Text>
-                        </TouchableOpacity>
-                    </View>
-                    <View style={{ flexDirection: 'column', marginRight: 15 }}>
-                        <TouchableOpacity>
-                            <Text style={styles.contactContainerTxt}>My Profile</Text>
-                        </TouchableOpacity>
-                    </View>
-                    <View style={{ flexDirection: 'column', marginRight: 15 }}>
-                        <TouchableOpacity>
-                            <Text style={styles.contactContainerTxt}>Settings</Text>
-                        </TouchableOpacity>
-                    </View>
                 </View>
-            </View>
+            </Aziz.Container>
         )
     } s
 }
