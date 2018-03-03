@@ -7,7 +7,7 @@ import Messages from './Messages.js'
 import ImagePicker from 'react-native-image-picker'
 import { pickImage, uploadImage } from './ImageUtils'
 import * as Aziz from 'native-base';
-
+import db from './db'
 
 export default class App extends React.Component {
 
@@ -43,15 +43,26 @@ export default class App extends React.Component {
                 this.setState({ image: await pickImage() })
             }
             const user = await firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password)
-            await db.collection("users").doc(this.state.email).set({name: this.state.name, age: this.state.age, gender: this.state.gender, location: this.state.location})
+            // await db.collection("users").doc('test001').add({ age: this.state.age, gender: this.state.gender, location: this.state.location})
+            
 
+
+            db.collection("users").doc(user.email).set({
+                age: this.state.age,
+                gender: this.state.gender,
+                location: this.state.location
+            })
+            .then(function() {
+                console.log("Document successfully written!");
+            })
+            .catch(function(error) {
+                console.error("Error writing document: ", error);
+            });
             if (this.state.image) {
                 const result = await uploadImage(this.state.image, user.email)
             }
-            // await db.collection('userslist').add({ id: this.state.email })
 
-            const { navigate } = this.props.navigation;
-            navigate("Login", {screen: "Login"})
+            this.props.navigation.goBack();
         }
        
     }

@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, TextInput, Button, ScrollView, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, TextInput, Button, ScrollView, TouchableOpacity,Alert } from 'react-native';
 import * as firebase from 'firebase';
 import 'firebase/firestore'
 import db from './db'
@@ -12,17 +12,10 @@ import * as Aziz from 'native-base';
 export default class App extends React.Component {
 
     state = {
-        email: '2@2.com',
+        email: '4@2.com',
         password: '123456'
-        // flag: true
     }
-    // async handleLogin () {
-    //     await firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
-    //     if (this.state.image) {
-    //         const result = await uploadImage(this.state.image, user.email)
-    //     }
 
-    // }
 
     handleLogin = async () => {
         const user = await firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
@@ -44,26 +37,12 @@ export default class App extends React.Component {
 
             } else {
                 // doc.data() will be undefined in this case
+                Alert.alert("Invalid username/password")
                 console.log("No such document!");
             }
         }).catch(function (error) {
             console.log("Error getting document:", error);
         });
-
-        
-        
-
-
-        
-        
-
-
-
-
-
-        // const { navigate } = this.props.navigation
-        // navigate("Contacts", {user: user.email})
-
 
     }
 
