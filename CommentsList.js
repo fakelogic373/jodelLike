@@ -5,8 +5,16 @@ import db from './db'
 import firebase from 'firebase'
 import Test from './test'
 import { StackNavigator } from 'react-navigation';
+import * as Aziz from 'native-base';
+
 
 export default class Comments extends React.Component {
+
+  static navigationOptions = ({ navigation }) => {
+    return {
+      title: `Comments`,
+    }
+  };
 
   state = {
     username: '',
@@ -44,48 +52,120 @@ export default class Comments extends React.Component {
 
   render() {
     return (
-      <View style={styles.container}>
-        <Button
-          title="Add a comment"
-          onPress={() => this.props.navigation.navigate('CreateComment', {
-            user: this.props.navigation.state.params.user,
-            id: this.props.navigation.state.params.id,
-            location: this.props.navigation.state.params.location
-          }
-          )}
-        />
-        <Text>comments</Text>
-        {
-          this.state.comments
-            ?
-            <FlatList
-              style={styles.list}
-              data={this.state.comments}
-              keyExtractor={comment => comment.id}
-              renderItem={
-                comment => {
-                  comment = comment.item
 
-                  return (
-                    <View key={comment.id} style={styles.toMe}>
-                      <Text>{comment.username}</Text>
+      <Aziz.Container>
 
-                      <Text>{comment.content}</Text>
+        <Aziz.Content>
+          {
+            this.state.comments
+              ?
+              <FlatList
+                style={styles.list}
+                data={this.state.comments}
+                keyExtractor={comment => comment.id}
+                renderItem={
+                  comment => {
+                    comment = comment.item
+                    return (
+                      <Aziz.List key={comment.id}>
+                        <Aziz.ListItem avatar>
 
+                          <Aziz.Left>
+                            <UserImage user={this.props.navigation.state.params.user} />
+                          </Aziz.Left>
 
+                          <Aziz.Body>
+                            <Aziz.Text>{comment.username}</Aziz.Text>
+                            <Aziz.Text note>{comment.content}</Aziz.Text>
+                          </Aziz.Body>
 
-                    </View>
-                  )
+                          <Aziz.Right>
+                            <Aziz.Text note>3:43 pm</Aziz.Text>
+                          </Aziz.Right>
+
+                        </Aziz.ListItem>
+                      </Aziz.List>
+                    )
+                  }
                 }
+              />
+              :
+              <View style={{ alignItems: 'center', justifyContent: 'center', paddingTop: 200 }}>
+                <Image style={{ width: 100, height: 100 }} source={require('./loading.gif')} />
+              </View>
+          }
+        </Aziz.Content>
+
+        <View style={{ flex: 1 }}>
+          <Aziz.Fab
+            active={this.state.active}
+            direction="up"
+            containerStyle={{ paddingBottom: 20 }}
+            style={{ backgroundColor: '#5067FF' }}
+            position="bottomRight"
+            onPress={() => this.setState({ active: !this.state.active })}>
+            <Aziz.Icon name="ios-more" />
+
+            <Aziz.Button style={{ backgroundColor: '#3B5998' }}
+              onPress={() => this.props.navigation.navigate('CreateComment', {
+                user: this.props.navigation.state.params.user,
+                id: this.props.navigation.state.params.id,
+                location: this.props.navigation.state.params.location
               }
-            />
-            :
-            <Text>Loading...</Text>
-        }
-        <UserImage user={this.props.navigation.state.params.user} />
+              )}>
+              <Aziz.Icon name="ios-chatboxes" />
+            </Aziz.Button>
+
+          </Aziz.Fab>
+        </View>
+
+      </Aziz.Container>
 
 
-      </View>
+      // <View style={styles.container}>
+      //   <Button
+      //     title="Add a comment"
+          // onPress={() => this.props.navigation.navigate('CreateComment', {
+          //   user: this.props.navigation.state.params.user,
+          //   id: this.props.navigation.state.params.id,
+          //   location: this.props.navigation.state.params.location
+          // }
+          // )}
+      //   />
+      //   <Text>comments</Text>
+      //   {
+      //     this.state.comments
+      //       ?
+            // <FlatList
+            //   style={styles.list}
+            //   data={this.state.comments}
+            //   keyExtractor={comment => comment.id}
+            //   renderItem={
+            //     comment => {
+            //       comment = comment.item
+
+            //       return (
+      //               <View key={comment.id} style={styles.toMe}>
+      //                 <Text>{comment.username}</Text>
+
+      //                 <Text>{comment.content}</Text>
+
+
+
+      //               </View>
+      //             )
+      //           }
+      //         }
+      //       />
+      //       :
+      // <View style={{ alignItems: 'center', justifyContent: 'center', paddingTop: 200 }}>
+      //   <Image style={{ width: 100, height: 100 }} source={require('./loading.gif')} />
+      // </View>
+      //   }
+      //   <UserImage user={this.props.navigation.state.params.user} />
+
+
+      // </View>
     )
   }
 }

@@ -9,8 +9,7 @@ import { Ionicons } from '@expo/vector-icons';
 
 export default TabNavigator({
   Posts: { screen: PostsList },
-  Contacts: { screen: Contacts },
-  
+  Messages: { screen: Contacts },
 },
 {
   navigationOptions: ({ navigation }) => ({
@@ -18,9 +17,9 @@ export default TabNavigator({
       const { routeName } = navigation.state;
       let iconName;
       if (routeName === 'Posts') {
-        iconName = `ios-information-circle${focused ? '' : '-outline'}`;
+        iconName = `ios-compass${focused ? '' : '-outline'}`;
       } else if (routeName === 'Messages') {
-        iconName = `ios-options${focused ? '' : '-outline'}`;
+        iconName = `ios-contacts${focused ? '' : '-outline'}`;
       }
 
       // You can return any component that you like here! We usually use an

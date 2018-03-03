@@ -7,8 +7,16 @@ import Test from './test'
 import { StackNavigator } from 'react-navigation';
 import { TabNavigator } from 'react-navigation';
 import Ads from './ads'
+import * as Aziz from 'native-base';
+
 
 export default class Posts extends React.Component {
+
+  static navigationOptions = ({ navigation }) => {
+    return {
+      title: `Qatar`,
+    }
+  };
 
   state = {
     location: '',
@@ -81,103 +89,164 @@ export default class Posts extends React.Component {
 
   render() {
     return (
-      <View style={styles.container}>
-        <Text>Posts</Text>
-        <Text>{this.state.location}</Text>
-        {
-          this.state.posts
-            ?
+      <Aziz.Container>
+        <Aziz.Content>
 
+          {
+            this.state.posts
+              ?
+              <FlatList
+                style={styles.list}
+                data={this.state.posts}
+                keyExtractor={message => message.id}
+                renderItem={
+                  message => {
+                    message = message.item // because of FlatList
 
-            <FlatList
-              style={styles.list}
-              data={this.state.posts}
-              keyExtractor={message => message.id}
-              renderItem={
-                message => {
-                  message = message.item // because of FlatList
+                    return (
+                      <Aziz.Card style={{ flex: 0 }} key={message.id}>
 
-                  return (
-                    <View key={message.id} style={styles.toMe}>
-                      <Text>{message.owner}</Text>
+                        <Aziz.CardItem>
+                          <Aziz.Left>
+                            <UserImage user={this.props.navigation.state.params.user} />
+                            <Aziz.Body>
+                              <Aziz.Text>{message.owner}</Aziz.Text>
+                              <Aziz.Text note>April 15, 2016</Aziz.Text>
+                            </Aziz.Body>
+                          </Aziz.Left>
+                        </Aziz.CardItem>
 
-                      <Text>{message.content}</Text>
-                      <Button
-                        title="Go to comment"
-                        onPress={() => this.props.navigation.navigate('CommentsList', {
-                          user: this.props.navigation.state.params.user,
-                          id: message.id,
-                          location: this.state.location
-                        }
-                        )}
-                      />
+                        <Aziz.CardItem>
+                          <Aziz.Body>
+                            <Aziz.Text>
+                              {message.content}
+                            </Aziz.Text>
+                          </Aziz.Body>
+                        </Aziz.CardItem>
 
-                      {
-                        this.props.navigation.state.params.user == message.owner
-                          ?
-                          <Button
-                            title="DeletePost"
-                            onPress={() => db.collection('posts').doc(this.state.location).collection('posts').
-                              doc(message.id).delete()
+                        <Aziz.CardItem>
+
+                          <Aziz.Left>
+                            <Aziz.Button transparent textStyle={{ color: '#87838B' }} onPress={() => this.props.navigation.navigate('CommentsList', {
+                              user: this.props.navigation.state.params.user,
+                              id: message.id,
+                              location: this.state.location
                             }
-                          />
-                          :
-                          <Text />
-                      }
+                            )}>
+                              <Aziz.Icon name="chatbubbles" />
+                              <Aziz.Text>0 Comments</Aziz.Text>
+                            </Aziz.Button>
+                          </Aziz.Left>
 
+                          <Aziz.Right>
+                            {
+                              this.props.navigation.state.params.user == message.owner
+                                ?
+                                <Aziz.Button transparent onPress={() => db.collection('posts').doc(this.state.location).collection('posts').doc(message.id).delete()}>
+                                  <Aziz.Text style={{ color: 'red' }} >Delete</Aziz.Text>
+                                  <Aziz.Icon style={{ color: 'red' }} name="ios-trash" />
+                                </Aziz.Button>
+                                :
+                                <Text />
+                            }
+                          </Aziz.Right>
 
+                        </Aziz.CardItem>
 
-
-                    </View>
-                  )
+                      </Aziz.Card>
+                    )
+                  }
                 }
-              }
-            />
-
-            :
-            <Text>Loading...</Text>
-        }
-        {/* <UserImage userinfo={this.props.navigation.state.params.user} /> */}
-
-
-        <Button
-          title="Create a post"
-          onPress={() => this.props.navigation.navigate('CreatePost', {
-            user: this.props.navigation.state.params.user
+              />
+              :
+              <View style={{ alignItems: 'center', justifyContent: 'center', paddingTop: 200 }}>
+                <Image style={{ width: 100, height: 100 }} source={require('./loading.gif')} />
+              </View>
           }
-          )}
-        />
+        </Aziz.Content>
+      </Aziz.Container>
 
-        {
-          this.state.userinfo
-          ?
-          <Ads userinfo={this.state.userinfo} />
-          :
-          <Text >default ad</Text>
-        }
-
-        
+      // <View style={styles.container}>
+      //   <Text>Posts</Text>
+      //   <Text>{this.state.location}</Text>
+      //   {
+      //     this.state.posts
+      //       ?
 
 
-        {/* <TextInput
-          placeholder="To"
-          value={this.state.to}
-          onChangeText={to => this.setState({ to })}
-        />
-        <TextInput
-          placeholder="Content"
-          value={this.state.content}
-          onChangeText={content => this.setState({ content })}
-        />
-        <Button
-          onPress={() => this.handleAdd()}
-          title="Send"
-        /> */}
-        {/* <Button
-          onPress={() => this.handleLogout()}
-          title="Logout"
-        /> */}
-      </View>
+            // <FlatList
+            //   style={styles.list}
+            //   data={this.state.posts}
+            //   keyExtractor={message => message.id}
+            //   renderItem={
+            //     message => {
+            //       message = message.item // because of FlatList
+
+            //       return (
+      //               <View key={message.id} style={styles.toMe}>
+      //                 <Text>{message.owner}</Text>
+
+      //                 <Text>{message.content}</Text>
+      //                 <Button
+      //                   title="Go to comment"
+      //                   onPress={() => this.props.navigation.navigate('CommentsList', {
+      //                     user: this.props.navigation.state.params.user,
+      //                     id: message.id,
+      //                     location: this.state.location
+      //                   }
+      //                   )}
+      //                 />
+
+      //                 {
+      //                   this.props.navigation.state.params.user == message.owner
+      //                     ?
+      //                     <Button
+      //                       title="DeletePost"
+      //                       onPress={() => db.collection('posts').doc(this.state.location).collection('posts').doc(message.id).delete()
+      //                       }
+      //                     />
+      //                     :
+      //                     <Text />
+      //                 }
+      //               </View>
+      //             )
+      //           }
+      //         }
+      //       />
+      //       :
+      //       <View style={{ alignItems: 'center', justifyContent: 'center', paddingTop: 200 }}>
+      //           <Image style={{ width: 100, height: 100 }} source={require('./loading.gif')} />
+      //         </View>
+      //   }
+      //   <UserImage userinfo={this.props.navigation.state.params.user} />
+
+
+
+
+
+
+
+
+
+
+      //   <Button
+      //     title="Create a post"
+      //     onPress={() => this.props.navigation.navigate('CreatePost', {
+      //       user: this.props.navigation.state.params.user
+      //     }
+      //     )}
+      //   />
+
+      //   {
+      //     this.state.userinfo
+      //     ?
+      //     <Ads userinfo={this.state.userinfo} />
+      //     :
+      //     <Text >default ad</Text>
+      //   }
+
+      // </View>
+
     )
   }
 }
@@ -190,7 +259,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   list: {
-    width: '100%'
+    width: '100%',
   },
   fromMe: {
     width: '80%',
@@ -200,6 +269,7 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-end'
   },
   toMe: {
+    backgroundColor: 'blue',
     flexDirection: 'row',
     width: '80%',
     padding: 10,
