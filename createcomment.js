@@ -28,7 +28,7 @@ export default class CreateComment extends React.Component {
 
             const postDocRf = await db.collection('posts').doc(this.props.navigation.state.params.location).collection('posts').
             doc(this.props.navigation.state.params.id)
-            postinfo.get().then(function (doc) {
+            .get().then(function (doc) {
             if (doc.exists) {
                 console.log("Document data:", doc.data());
 
