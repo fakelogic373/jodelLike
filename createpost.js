@@ -28,6 +28,11 @@ export default class CreatePost extends React.Component {
 
     async handleSend() {
 
+        if (this.state.image) {
+            // const result = await uploadImage(this.state.image, 'test01')
+        }
+
+
 
         await db.collection('posts').doc(this.props.navigation.state.params.userinfo.location).collection('posts').add({
             owner: this.props.navigation.state.params.user,
@@ -36,12 +41,36 @@ export default class CreatePost extends React.Component {
             date: new Date(),
             content: this.state.content
         })
-        // if (this.state.image) {
-        //     const result = await uploadImage(this.state.image, user.email)
-        // }
 
-        
+
+        if (this.state.image) {
+        const setListener = await db.collection('posts').doc(this.props.navigation.state.params.userinfo.location).collection('posts').orderBy("date", "desc").limit(1).onSnapshot(
+            snap => {
+                let posts = []
+                snap.forEach(
+                    doc =>
+                        posts.push({
+                            id: doc.id,
+                            owner: doc.data().owner,
+                            date: doc.data().date,
+                            type: doc.data().type,
+                            content: doc.data().content,
+                        })
+                )
+                console.log("Data = " + posts[0].id + ":: " + posts[0].content)
+                    this.uploading(posts[0].id);
+                
+            })
+        }
+
+
         this.props.navigation.goBack();
+    }
+
+    async uploading(id) {
+
+        const result = await uploadImage(this.state.image, id)
+
     }
 
     render() {
