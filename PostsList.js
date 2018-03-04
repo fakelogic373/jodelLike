@@ -163,6 +163,16 @@ export default class Posts extends React.Component {
                 <Image style={{ width: 100, height: 100 }} source={require('./loading.gif')} />
               </View>
           }
+
+          {
+            this.state.userinfo
+              ?
+              <Ads userinfo={this.state.userinfo} />
+              :
+              <Text >default ad</Text>
+          }
+
+
         </Aziz.Content>
       </Aziz.Container>
 
@@ -174,15 +184,15 @@ export default class Posts extends React.Component {
       //       ?
 
 
-            // <FlatList
-            //   style={styles.list}
-            //   data={this.state.posts}
-            //   keyExtractor={message => message.id}
-            //   renderItem={
-            //     message => {
-            //       message = message.item // because of FlatList
+      // <FlatList
+      //   style={styles.list}
+      //   data={this.state.posts}
+      //   keyExtractor={message => message.id}
+      //   renderItem={
+      //     message => {
+      //       message = message.item // because of FlatList
 
-            //       return (
+      //       return (
       //               <View key={message.id} style={styles.toMe}>
       //                 <Text>{message.owner}</Text>
 
@@ -237,13 +247,7 @@ export default class Posts extends React.Component {
       //     )}
       //   />
 
-      //   {
-      //     this.state.userinfo
-      //     ?
-      //     <Ads userinfo={this.state.userinfo} />
-      //     :
-      //     <Text >default ad</Text>
-      //   }
+
 
       // </View>
 

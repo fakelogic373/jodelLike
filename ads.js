@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, View, Text } from 'react-native';
 import db from './db'
-
+import AdsImage from './adsImage'
 
 export default class Ads extends React.Component {
 
@@ -12,7 +12,7 @@ export default class Ads extends React.Component {
 
     async componentDidMount() {
 
-        const setListener = await db.collection('ads').doc(this.props.userinfo.location).collection('ads')
+        const setListener = await db.collection('ads').doc(this.props.userinfo.location).collection('ads').where('gender','==',this.props.userinfo.gender)
             .onSnapshot(
                 snap => {
                     let ads = []
@@ -30,20 +30,22 @@ export default class Ads extends React.Component {
                     console.log(num)
                     this.setState({ ads, num })
                 })
+        
 
     }
 
     render() {
         
         return (
-            <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: 'pink' }}>
-                <Text> Screen 1 </Text>
-                <Text> {this.props.userinfo.location} {this.props.userinfo.gender} {this.props.userinfo.age}</Text>
+            <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+                {/* <Text> Screen 1 </Text>
+                <Text> {this.props.userinfo.location} {this.props.userinfo.gender} {this.props.userinfo.age}</Text> */}
                 {
                     
                     this.state.ads
                         ?
-                        <Text>{this.state.ads[this.state.num].name}</Text>
+                        // <Text>{this.state.ads[this.state.num].name}</Text>
+                        <AdsImage user={this.state.ads[this.state.num].name}/>
                         
                         :
                         <Text>loading ad</Text>
