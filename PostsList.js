@@ -50,6 +50,7 @@ export default class Posts extends React.Component {
               date: doc.data().date,
               type: doc.data().type,
               content: doc.data().content,
+              number: doc.data().number
             })
         )
         this.setState({ posts })
@@ -90,7 +91,6 @@ export default class Posts extends React.Component {
         content: this.state.content
       })
     } 
-
 
     if (this.state.image) {
       const setListener = await db.collection('posts').doc(this.props.navigation.state.params.userinfo.location).collection('posts').orderBy("date", "desc").limit(1).onSnapshot(
@@ -139,15 +139,17 @@ export default class Posts extends React.Component {
                   message => {
                     message = message.item // because of FlatList
 
+                    console.log('date: ' + message.date)
+
                     return (
                       <Aziz.Card style={{ flex: 0 }} key={message.id}>
 
                         <Aziz.CardItem>
                           <Aziz.Left>
-                            <UserImage user={this.props.navigation.state.params.user} />
+                            <UserImage user={message.owner} />
                             <Aziz.Body>
                               <Aziz.Text>{message.owner}</Aziz.Text>
-                              <Aziz.Text note>April 15, 2016</Aziz.Text>
+                              <Aziz.Text note>{ message.date.toString().substring(0,25)}</Aziz.Text>
                             </Aziz.Body>
                           </Aziz.Left>
                         </Aziz.CardItem>
@@ -170,7 +172,7 @@ export default class Posts extends React.Component {
                             }
                             )}>
                               <Aziz.Icon name="chatbubbles" />
-                              <Aziz.Text>0 Comments</Aziz.Text>
+                              <Aziz.Text>{message.number} Comments</Aziz.Text>
                             </Aziz.Button>
                           </Aziz.Left>
 
