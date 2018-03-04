@@ -8,13 +8,14 @@ import { StackNavigator } from 'react-navigation';
 import { TabNavigator } from 'react-navigation';
 import Ads from './ads'
 import * as Aziz from 'native-base';
-
+import { pickImage, uploadImage } from './ImageUtils'
+import ImagePicker from 'react-native-image-picker'
 
 export default class Posts extends React.Component {
 
   static navigationOptions = ({ navigation }) => {
     return {
-      title: `Qatar`,
+      title: `Posts`,
     }
   };
 
@@ -26,31 +27,14 @@ export default class Posts extends React.Component {
     posts: null,
     removeListener: null,
     isClicked: null,
-    userinfo: null
+    userinfo: null,
+    image: null
 
   }
 
   async componentDidMount() {
-    // var temp;
-
-    // const userinfo = await db.collection('users').doc(this.props.navigation.state.params.user)
-    // userinfo.get().then(function (user) {
-    //   if (user.exists) {
-    //     console.log("data=", user.data());
-    //     temp = user.data();
-    //     console.log("data=", temp.location);
-    //   } else {
-    //     // doc.data() will be undefined in this case
-    //     console.log("No such document!");
-    //   }
-    // }).catch(function (error) {
-    //   console.log("Error getting document:", error);
-    // });
-
-    // console.log("userinfo XXX=" + this.props.navigation.state.params.userinfo)
 
     var temp = this.props.navigation.state.params.userinfo
-    // console.log("loc XXX=" + temp.location)
     this.setState({ location: temp.location })
     this.setState({ userinfo: temp })
 
@@ -86,20 +70,63 @@ export default class Posts extends React.Component {
     firebase.auth().signOut()
   }
 
+  async handlePickImage() {
+    this.setState({ image: await pickImage() })
+    this.handleSend()
+  }
+
+  async uploading(id) {
+    const result = await uploadImage(this.state.image, id)
+  }
+
+  async handleSend() {
+
+    if (this.state.image) {
+      await db.collection('posts').doc(this.props.navigation.state.params.userinfo.location).collection('posts').add({
+        owner: this.props.navigation.state.params.user,
+        location: this.props.navigation.state.params.userinfo.location,
+        type: 'image',
+        date: new Date(),
+        content: this.state.content
+      })
+    } 
+
+
+    if (this.state.image) {
+      const setListener = await db.collection('posts').doc(this.props.navigation.state.params.userinfo.location).collection('posts').orderBy("date", "desc").limit(1).onSnapshot(
+        snap => {
+          let posts = []
+          snap.forEach(
+            doc =>
+              posts.push({
+                id: doc.id,
+                owner: doc.data().owner,
+                date: doc.data().date,
+                type: doc.data().type,
+                content: doc.data().content,
+              })
+          )
+          console.log("Data = " + posts[0].id + ":: " + posts[0].content)
+          this.uploading(posts[0].id);
+
+        })
+    }
+  }
+
 
   render() {
     return (
       <Aziz.Container>
         <Aziz.Content>
 
-            <Button
-          title="Create a post"
-          onPress={() => this.props.navigation.navigate('CreatePost', {
-            user: this.props.navigation.state.params.user,
-            userinfo: this.state.userinfo
-          }
-          )}
-        />
+          <Button
+            title="Create a post"
+            onPress={() => this.props.navigation.navigate('CreatePost', {
+              user: this.props.navigation.state.params.user,
+              userinfo: this.state.userinfo
+            }
+            )}
+          />
 
           {
             this.state.posts
@@ -183,6 +210,28 @@ export default class Posts extends React.Component {
 
 
         </Aziz.Content>
+
+        <View>
+          <Aziz.Fab
+            active={this.state.active}
+            direction="up"
+            containerStyle={{ paddingBottom: 20 }}
+            style={{ backgroundColor: '#5067FF' }}
+            position="bottomRight"
+            onPress={() => this.setState({ active: !this.state.active })}>
+            <Aziz.Icon name="md-send" />
+
+            <Aziz.Button style={{ backgroundColor: '#34A34F' }} onPress={() => this.handlePickImage()}>
+              <Aziz.Icon name="ios-images" />
+            </Aziz.Button>
+
+            <Aziz.Button style={{ backgroundColor: '#DD5144' }} onPress={() => this.props.navigation.navigate('CreatePost', { user: this.props.navigation.state.params.user })}>
+              <Aziz.Icon name="ios-send" />
+            </Aziz.Button>
+
+          </Aziz.Fab>
+        </View>
+
       </Aziz.Container>
 
       // <View style={styles.container}>
@@ -248,7 +297,7 @@ export default class Posts extends React.Component {
 
 
 
-      
+
 
 
 

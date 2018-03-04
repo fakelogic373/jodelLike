@@ -4,12 +4,14 @@ import { TabNavigator, TabBarBottom } from 'react-navigation';
 import Messages from './Messages.js'
 import Contacts from './Contacts'
 import PostsList from './PostsList'
+import Profile from './Profile'
 import { Ionicons } from '@expo/vector-icons'; 
 
 
 export default TabNavigator({
   Posts: { screen: PostsList },
   Messages: { screen: Contacts },
+  Profile: { screen: Profile },
 },
 {
   navigationOptions: ({ navigation }) => ({
@@ -20,7 +22,10 @@ export default TabNavigator({
         iconName = `ios-compass${focused ? '' : '-outline'}`;
       } else if (routeName === 'Messages') {
         iconName = `ios-contacts${focused ? '' : '-outline'}`;
+      } else if (routeName === 'Profile') {
+        iconName = `ios-person${focused ? '' : '-outline'}`;
       }
+      
 
       // You can return any component that you like here! We usually use an
       // icon component from react-native-vector-icons
@@ -33,7 +38,7 @@ export default TabNavigator({
     activeTintColor: 'tomato',
     inactiveTintColor: 'gray',
   },
-  animationEnabled: false,
-  swipeEnabled: false,
+  animationEnabled: true,
+  swipeEnabled: true,
 }
 );

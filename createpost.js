@@ -47,9 +47,6 @@ export default class CreatePost extends React.Component {
         }
 
 
-        //da
-
-
         if (this.state.image) {
         const setListener = await db.collection('posts').doc(this.props.navigation.state.params.userinfo.location).collection('posts').orderBy("date", "desc").limit(1).onSnapshot(
             snap => {
