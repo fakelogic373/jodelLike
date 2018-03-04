@@ -34,7 +34,8 @@ export default class CreatePost extends React.Component {
                 location: this.props.navigation.state.params.userinfo.location,
                 type: 'image',
                 date: new Date(),
-                content: this.state.content
+                content: this.state.content,
+                number : 0
             })
         }else{
             await db.collection('posts').doc(this.props.navigation.state.params.userinfo.location).collection('posts').add({
@@ -42,7 +43,8 @@ export default class CreatePost extends React.Component {
                 location: this.props.navigation.state.params.userinfo.location,
                 type: 'text',
                 date: new Date(),
-                content: this.state.content
+                content: this.state.content,
+                number: 0
             })
         }
 

@@ -22,6 +22,31 @@ export default class CreateComment extends React.Component {
                 content: this.state.content,
                 date: new Date()
             })
+
+            let tempNum=0;
+
+
+            const postDocRf = await db.collection('posts').doc(this.props.navigation.state.params.location).collection('posts').
+            doc(this.props.navigation.state.params.id)
+            postinfo.get().then(function (doc) {
+            if (doc.exists) {
+                console.log("Document data:", doc.data());
+
+                tempNum= doc.data().number + 1
+                
+  
+            } else {
+                console.log("No such document!");
+            }
+        }).catch(function (error) {
+            console.log("Error getting document:", error);
+        });
+
+
+            await db.collection('posts').doc(this.props.navigation.state.params.location).collection('posts').
+            doc(this.props.navigation.state.params.id).update({
+                number: tempNum
+            })
             this.props.navigation.goBack();
     }
 
