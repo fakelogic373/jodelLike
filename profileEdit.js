@@ -13,79 +13,26 @@ export default class App extends React.Component {
 
     static navigationOptions = {
         title: 'Profile',
-    };
+      };
 
     state = {
         email: '',
         password: '',
-        age: '44',
+        age: '',
         gender: '',
         location: '',
         passwordConfirm: '',
-        image: null,
-        user: null
+        image: null
     }
 
-    async componentDidMount() {
-        // let tempData = null
-        // const userinfoRef = await db.collection('users').doc(this.props.navigation.state.params.user)
-        // userinfoRef.get().then(function(doc) {
-        //     if (doc.exists) {
-        //         console.log("Document dataX:", doc.data());
-        //         tempData = doc.data()
-        //         console.log("my age is "+this.state.age)
-        //         this.setState({
-        //             age: doc.data().age
-        //         })
-
-        //     } else {
-        //         // doc.data() will be undefined in this case
-        //         console.log("No such document!");
-        //     }
-        // }).catch(function(error) {
-        //     console.log("Error getting document:", error);
-        // });
-
-        // const setListener = await db.collection('users').doc(this.props.navigation.state.params.user)
-        //     .onSnapshot(
-        //         snap => {
-        //             let messages = []
-        //             snap.forEach(
-        //                 doc => {
-        //                     if (doc.data().to == this.props.navigation.state.params.to || doc.data().from == this.props.navigation.state.params.to) {
-        //                         messages.push({
-        //                             id: doc.id,
-        //                             age: doc.data().age,
-        //                             gender: doc.data().gender,
-        //                             location: doc.data().location
-        //                         })
-
-        //                     }
-
-        //                 }
-
-        //             )
-        //             console.log("messages " + messages)
-        //             //this.setState({ messages })
-        //         })
-        // this.setState({ setListener })
-
-        // console.log("asdas"+userinfoRef.get().data())
-
-
-
-
-
-
-
-
-
+    componentDidMount() {
+        this.listenForItems()
     }
 
     listenForItems() {
-        const userinfoRef = db.collection('users').doc(this.props.navigation.state.params.user)
+        let userinfoRef = db.collection('users').doc(this.props.navigation.state.params.user)
 
-        userinfoRef.get().then(function (doc) {
+        userinfoRef.get().then(function(doc) {
             if (doc.exists) {
                 console.log("Document dataX:", doc.data());
                 this.setState({
@@ -95,18 +42,18 @@ export default class App extends React.Component {
                 // doc.data() will be undefined in this case
                 console.log("No such document!");
             }
-        }).catch(function (error) {
+        }).catch(function(error) {
             console.log("Error getting document:", error);
         });
 
-
+            
 
     }
 
     handleRegister = async () => {
         // if (this.state.password === this.state.passwordConfirm ) {
-
-
+            
+ 
         //     // db.collection("users").doc(user.email).set({
         //     //     age: this.state.age,
         //     //     gender: this.state.gender,
@@ -129,12 +76,12 @@ export default class App extends React.Component {
             gender: this.state.gender,
             location: this.state.location
         })
-            .then(function () {
-                console.log("Document successfully written!");
-            })
-            .catch(function (error) {
-                console.error("Error writing document: ", error);
-            });
+        .then(function() {
+            console.log("Document successfully written!");
+        })
+        .catch(function(error) {
+            console.error("Error writing document: ", error);
+        });
         if (this.state.image) {
             const result = await uploadImage(this.state.image, user.email)
         }
@@ -152,7 +99,7 @@ export default class App extends React.Component {
         //         // The document probably doesn't exist.
         //         console.error("Error updating document: ", error);
         //     });
-
+       
     }
 
     async handlePickImage() {
@@ -165,7 +112,7 @@ export default class App extends React.Component {
 
     render() {
         return (
-
+            
             <Aziz.Container>
 
                 {/* CONTENT */}
@@ -208,7 +155,7 @@ export default class App extends React.Component {
 
                         <View style={{ padding: 40 }}>
                             <Aziz.Button onPress={() => this.handleRegister()} block success iconLeft>
-                                <Aziz.Icon name='person' />
+                            <Aziz.Icon name='person' />
                                 <Aziz.Text>Update profile</Aziz.Text>
                             </Aziz.Button>
                         </View>
@@ -222,7 +169,7 @@ export default class App extends React.Component {
                 </Aziz.Footer>
 
             </Aziz.Container>
-
+            
         )
     }
 }
