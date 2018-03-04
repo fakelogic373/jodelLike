@@ -29,18 +29,25 @@ export default class CreatePost extends React.Component {
     async handleSend() {
 
         if (this.state.image) {
-            // const result = await uploadImage(this.state.image, 'test01')
+            await db.collection('posts').doc(this.props.navigation.state.params.userinfo.location).collection('posts').add({
+                owner: this.props.navigation.state.params.user,
+                location: this.props.navigation.state.params.userinfo.location,
+                type: 'image',
+                date: new Date(),
+                content: this.state.content
+            })
+        }else{
+            await db.collection('posts').doc(this.props.navigation.state.params.userinfo.location).collection('posts').add({
+                owner: this.props.navigation.state.params.user,
+                location: this.props.navigation.state.params.userinfo.location,
+                type: 'text',
+                date: new Date(),
+                content: this.state.content
+            })
         }
 
 
-
-        await db.collection('posts').doc(this.props.navigation.state.params.userinfo.location).collection('posts').add({
-            owner: this.props.navigation.state.params.user,
-            location: this.props.navigation.state.params.userinfo.location,
-            type: 'text',
-            date: new Date(),
-            content: this.state.content
-        })
+        //da
 
 
         if (this.state.image) {
