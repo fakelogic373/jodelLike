@@ -51,7 +51,7 @@ export default class Contacts extends React.Component {
                                 ?
                                 this.state.contacts.map(
                                     contact =>
-                                        <TouchableOpacity key={contact.email} onPress={() => navigate("Messages", {
+                                        <TouchableOpacity key={contact.email} onPress={() => navigate("MessagesList", {
                                             user: this.props.navigation.state.params.user,
                                             to: contact.email, contactname: contact.name
 
