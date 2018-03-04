@@ -45,8 +45,6 @@ export default class App extends React.Component {
             const user = await firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password)
             // await db.collection("users").doc('test001').add({ age: this.state.age, gender: this.state.gender, location: this.state.location})
             
-
-
             db.collection("users").doc(user.email).set({
                 age: this.state.age,
                 gender: this.state.gender,

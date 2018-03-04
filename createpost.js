@@ -15,22 +15,34 @@ export default class CreatePost extends React.Component {
         content: '',
         type: '',
         date: '',
+        image: null
+    }
+
+
+    async handlePickImage() {
+        this.setState({ image: await pickImage() })
     }
 
 
 
 
     async handleSend() {
-        await db.collection('posts').doc('Qatar').collection('posts').add({
+
+
+        await db.collection('posts').doc(this.props.navigation.state.params.userinfo.location).collection('posts').add({
             owner: this.props.navigation.state.params.user,
-            location: 'Qatar',
-            type:'text',
+            location: this.props.navigation.state.params.userinfo.location,
+            type: 'text',
             date: new Date(),
             content: this.state.content
         })
+        // if (this.state.image) {
+        //     const result = await uploadImage(this.state.image, user.email)
+        // }
+
+        
         this.props.navigation.goBack();
     }
-
 
     render() {
         return (
@@ -47,6 +59,13 @@ export default class CreatePost extends React.Component {
                             <Aziz.Label>Send a message here</Aziz.Label>
                             <Aziz.Input onChangeText={content => this.setState({ content })} />
                         </Aziz.Item>
+
+                        <View style={{ paddingTop: 30, paddingRight: 80, paddingLeft: 80 }}>
+                            <Aziz.Button onPress={() => this.handlePickImage()} bordered info iconLeft>
+                                <Aziz.Icon name='ios-images' />
+                                <Aziz.Text>Choose an Image   </Aziz.Text>
+                            </Aziz.Button>
+                        </View>
 
 
 

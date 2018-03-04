@@ -92,6 +92,15 @@ export default class Posts extends React.Component {
       <Aziz.Container>
         <Aziz.Content>
 
+            <Button
+          title="Create a post"
+          onPress={() => this.props.navigation.navigate('CreatePost', {
+            user: this.props.navigation.state.params.user,
+            userinfo: this.state.userinfo
+          }
+          )}
+        />
+
           {
             this.state.posts
               ?
@@ -239,13 +248,7 @@ export default class Posts extends React.Component {
 
 
 
-      //   <Button
-      //     title="Create a post"
-      //     onPress={() => this.props.navigation.navigate('CreatePost', {
-      //       user: this.props.navigation.state.params.user
-      //     }
-      //     )}
-      //   />
+      
 
 
 
