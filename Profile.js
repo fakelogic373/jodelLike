@@ -149,12 +149,14 @@ export default class App extends React.Component {
                             <Aziz.Input onChangeText={location => this.setState({ location })} />
                         </Aziz.Item>
 
-             
 
-                        
+
+
 
                         <View style={{ padding: 40 }}>
-                            <Aziz.Button onPress={() => this.handleRegister()} block success iconLeft>
+                            <Aziz.Button onPress={() => this.props.navigation.navigate('ProfileEdit', {
+                                user: this.props.navigation.state.params.user
+                            })} block success iconLeft>
                                 <Aziz.Icon name='person' />
                                 <Aziz.Text>Update profile</Aziz.Text>
                             </Aziz.Button>

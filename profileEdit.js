@@ -156,7 +156,7 @@ export default class App extends React.Component {
                         <View style={{ padding: 40 }}>
                             <Aziz.Button onPress={() => this.handleRegister()} block success iconLeft>
                             <Aziz.Icon name='person' />
-                                <Aziz.Text>Update profile</Aziz.Text>
+                                <Aziz.Text>Save</Aziz.Text>
                             </Aziz.Button>
                         </View>
 

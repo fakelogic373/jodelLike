@@ -15,6 +15,7 @@ import CreatePost from './createpost'
 import CreateComment from './createcomment'
 import { StackNavigator, } from 'react-navigation';
 import Tabnav from './tabnav'
+import ProfileEdit from './profileEdit'
 
 export default class App extends React.Component {
   render() {
@@ -32,6 +33,7 @@ const RootStack = StackNavigator({
   CommentsList: {screen: CommentsList},
   CreatePost: {screen: CreatePost},
   CreateComment: {screen: CreateComment},
+  ProfileEdit: {screen: ProfileEdit},
   Tabnav: { screen: Tabnav}
 },
   {
