@@ -8,6 +8,7 @@ import ImagePicker from 'react-native-image-picker'
 import { pickImage, uploadImage } from './ImageUtils'
 import * as Aziz from 'native-base';
 import db from './db'
+import UserImage from './UserImage'
 
 export default class App extends React.Component {
 
@@ -26,58 +27,13 @@ export default class App extends React.Component {
         user: null
     }
 
-    async componentDidMount() {
-        // let tempData = null
-        // const userinfoRef = await db.collection('users').doc(this.props.navigation.state.params.user)
-        // userinfoRef.get().then(function(doc) {
-        //     if (doc.exists) {
-        //         console.log("Document dataX:", doc.data());
-        //         tempData = doc.data()
-        //         console.log("my age is "+this.state.age)
-        //         this.setState({
-        //             age: doc.data().age
-        //         })
+    componentDidMount() {
 
-        //     } else {
-        //         // doc.data() will be undefined in this case
-        //         console.log("No such document!");
-        //     }
-        // }).catch(function(error) {
-        //     console.log("Error getting document:", error);
-        // });
-
-        // const setListener = await db.collection('users').doc(this.props.navigation.state.params.user)
-        //     .onSnapshot(
-        //         snap => {
-        //             let messages = []
-        //             snap.forEach(
-        //                 doc => {
-        //                     if (doc.data().to == this.props.navigation.state.params.to || doc.data().from == this.props.navigation.state.params.to) {
-        //                         messages.push({
-        //                             id: doc.id,
-        //                             age: doc.data().age,
-        //                             gender: doc.data().gender,
-        //                             location: doc.data().location
-        //                         })
-
-        //                     }
-
-        //                 }
-
-        //             )
-        //             console.log("messages " + messages)
-        //             //this.setState({ messages })
-        //         })
-        // this.setState({ setListener })
-
-        // console.log("asdas"+userinfoRef.get().data())
-
-
-
-
-
-
-
+        this.setState({
+            age: this.props.navigation.state.params.userinfo.age,
+            gender: this.props.navigation.state.params.userinfo.gender,
+            location: this.props.navigation.state.params.userinfo.location
+        })
 
 
     }
@@ -172,6 +128,8 @@ export default class App extends React.Component {
                 <Aziz.Content>
                     <Aziz.Form>
 
+                        <UserImage user={this.props.navigation.state.params.user} />
+
 
                         <Aziz.Item floatingLabel>
                             <Aziz.Label>Age</Aziz.Label>
@@ -181,30 +139,19 @@ export default class App extends React.Component {
 
                         <Aziz.Item floatingLabel>
                             <Aziz.Label>Gender</Aziz.Label>
+                            <Aziz.Label >{this.state.gender}</Aziz.Label>
                             <Aziz.Input onChangeText={gender => this.setState({ gender })} />
                         </Aziz.Item>
 
                         <Aziz.Item floatingLabel>
                             <Aziz.Label>Location</Aziz.Label>
+                            <Aziz.Label >{this.state.location}</Aziz.Label>
                             <Aziz.Input onChangeText={location => this.setState({ location })} />
                         </Aziz.Item>
 
-                        {/* <Aziz.Item floatingLabel>
-                            <Aziz.Label>Password</Aziz.Label>
-                            <Aziz.Input secureTextEntry onChangeText={password => this.setState({ password })} />
-                        </Aziz.Item>
+             
 
-                        <Aziz.Item floatingLabel>
-                            <Aziz.Label>Confirm Password</Aziz.Label>
-                            <Aziz.Input secureTextEntry onChangeText={passwordConfirm => this.setState({ passwordConfirm })} />
-                        </Aziz.Item> */}
-
-                        <View style={{ paddingTop: 30, paddingRight: 80, paddingLeft: 80 }}>
-                            <Aziz.Button onPress={() => this.handlePickImage()} bordered info iconLeft>
-                                <Aziz.Icon name='ios-images' />
-                                <Aziz.Text>Choose an Image     </Aziz.Text>
-                            </Aziz.Button>
-                        </View>
+                        
 
                         <View style={{ padding: 40 }}>
                             <Aziz.Button onPress={() => this.handleRegister()} block success iconLeft>
