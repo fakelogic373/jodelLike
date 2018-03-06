@@ -25,32 +25,9 @@ export default class App extends React.Component {
         image: null
     }
 
-    componentDidMount() {
-        this.listenForItems()
-    }
+   
 
-    listenForItems() {
-        let userinfoRef = db.collection('users').doc(this.props.navigation.state.params.user)
-
-        userinfoRef.get().then(function(doc) {
-            if (doc.exists) {
-                console.log("Document dataX:", doc.data());
-                this.setState({
-                    age: doc.data().age
-                })
-            } else {
-                // doc.data() will be undefined in this case
-                console.log("No such document!");
-            }
-        }).catch(function(error) {
-            console.log("Error getting document:", error);
-        });
-
-            
-
-    }
-
-    handleRegister = async () => {
+    handleUpdate = async () => {
         // if (this.state.password === this.state.passwordConfirm ) {
             
  
@@ -71,7 +48,7 @@ export default class App extends React.Component {
 
         // }
 
-        db.collection("users").doc(user.email).set({
+        db.collection("users").doc(this.props.navigation.state.params.user).set({
             age: this.state.age,
             gender: this.state.gender,
             location: this.state.location
@@ -86,19 +63,8 @@ export default class App extends React.Component {
             const result = await uploadImage(this.state.image, user.email)
         }
 
-        // var userRef = db.collection('users').doc(this.props.navigation.state.params.user);
+        this.props.navigation.goBack();
 
-        // // Set the "capital" field of the city 'DC'
-        // return userRef.update({
-        //     capital: true
-        // })
-        //     .then(function () {
-        //         console.log("Document successfully updated!");
-        //     })
-        //     .catch(function (error) {
-        //         // The document probably doesn't exist.
-        //         console.error("Error updating document: ", error);
-        //     });
        
     }
 
@@ -154,7 +120,7 @@ export default class App extends React.Component {
                         </View>
 
                         <View style={{ padding: 40 }}>
-                            <Aziz.Button onPress={() => this.handleRegister()} block success iconLeft>
+                            <Aziz.Button onPress={() => this.handleUpdate()} block success iconLeft>
                             <Aziz.Icon name='person' />
                                 <Aziz.Text>Save</Aziz.Text>
                             </Aziz.Button>

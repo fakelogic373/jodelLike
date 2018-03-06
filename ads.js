@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, View, Text } from 'react-native';
+import { Button, View, Text,Image } from 'react-native';
 import db from './db'
 import AdsImage from './adsImage'
 
@@ -28,6 +28,9 @@ export default class Ads extends React.Component {
                     let num = Math.random() * (ads.length - 0) + 0;
                     num = Math.floor(num);
                     console.log(num)
+                    if(ads.length==0){
+                        ads=null
+                    }
                     this.setState({ ads, num })
                 })
         
@@ -48,7 +51,10 @@ export default class Ads extends React.Component {
                         <AdsImage user={this.state.ads[this.state.num].name}/>
                         
                         :
-                        <Text>loading ad</Text>
+                        <Image 
+                style={{ width: 300, height: 150}}
+                source={require('./images/ad-banner.jpg')}
+            />
                 }
 
             </View>

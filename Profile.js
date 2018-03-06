@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, TextInput, Button, ScrollView, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, TextInput, Button, ScrollView, TouchableOpacity, Alert } from 'react-native';
 import * as firebase from 'firebase';
 import 'firebase/firestore'
 import Login from './Login'
@@ -9,6 +9,8 @@ import { pickImage, uploadImage } from './ImageUtils'
 import * as Aziz from 'native-base';
 import db from './db'
 import UserImage from './UserImage'
+
+const Item = Aziz.Picker.Item;
 
 export default class App extends React.Component {
 
@@ -59,28 +61,14 @@ export default class App extends React.Component {
 
     }
 
+    onValueChange2(value) {
+        this.setState({
+            gender: value
+        });
+    }
+
     handleRegister = async () => {
-        // if (this.state.password === this.state.passwordConfirm ) {
-
-
-        //     // db.collection("users").doc(user.email).set({
-        //     //     age: this.state.age,
-        //     //     gender: this.state.gender,
-        //     //     location: this.state.location
-        //     // })
-        //     // .then(function() {
-        //     //     console.log("Document successfully written!");
-        //     // })
-        //     // .catch(function(error) {
-        //     //     console.error("Error writing document: ", error);
-        //     // });
-        //     // if (this.state.image) {
-        //     //     const result = await uploadImage(this.state.image, user.email)
-        //     // }
-
-        // }
-
-        db.collection("users").doc(user.email).set({
+        db.collection("users").doc(this.props.navigation.state.params.user).set({
             age: this.state.age,
             gender: this.state.gender,
             location: this.state.location
@@ -95,19 +83,7 @@ export default class App extends React.Component {
             const result = await uploadImage(this.state.image, user.email)
         }
 
-        // var userRef = db.collection('users').doc(this.props.navigation.state.params.user);
-
-        // // Set the "capital" field of the city 'DC'
-        // return userRef.update({
-        //     capital: true
-        // })
-        //     .then(function () {
-        //         console.log("Document successfully updated!");
-        //     })
-        //     .catch(function (error) {
-        //         // The document probably doesn't exist.
-        //         console.error("Error updating document: ", error);
-        //     });
+        Alert.alert("Profile has been updated")
 
     }
 
@@ -137,11 +113,18 @@ export default class App extends React.Component {
                             <Aziz.Input onChangeText={age => this.setState({ age })} />
                         </Aziz.Item>
 
-                        <Aziz.Item floatingLabel>
-                            <Aziz.Label>Gender</Aziz.Label>
-                            <Aziz.Label >{this.state.gender}</Aziz.Label>
-                            <Aziz.Input onChangeText={gender => this.setState({ gender })} />
-                        </Aziz.Item>
+                   
+                        <Aziz.Form>
+                            <Aziz.Picker
+                                mode="dropdown"
+                                placeholder="Select One"
+                                selectedValue={this.state.selected2}
+                                onValueChange={this.onValueChange2.bind(this)}
+                            >
+                                <Item label="Male" value="Male" />
+                                <Item label="Female" value="Female" />
+                            </Aziz.Picker>
+                        </Aziz.Form>
 
                         <Aziz.Item floatingLabel>
                             <Aziz.Label>Location</Aziz.Label>
@@ -153,10 +136,17 @@ export default class App extends React.Component {
 
 
 
-                        <View style={{ padding: 40 }}>
+                        {/* <View style={{ padding: 40 }}>
                             <Aziz.Button onPress={() => this.props.navigation.navigate('ProfileEdit', {
                                 user: this.props.navigation.state.params.user
                             })} block success iconLeft>
+                                <Aziz.Icon name='person' />
+                                <Aziz.Text>Update profile</Aziz.Text>
+                            </Aziz.Button>
+                        </View> */}
+
+                        <View style={{ padding: 40 }}>
+                            <Aziz.Button onPress={() => this.handleRegister()} block success iconLeft>
                                 <Aziz.Icon name='person' />
                                 <Aziz.Text>Update profile</Aziz.Text>
                             </Aziz.Button>
