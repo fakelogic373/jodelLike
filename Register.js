@@ -9,11 +9,14 @@ import { pickImage, uploadImage } from './ImageUtils'
 import * as Aziz from 'native-base';
 import db from './db'
 
+const Item = Aziz.Picker.Item;
+
+
 export default class App extends React.Component {
 
     static navigationOptions = {
         title: 'Register',
-      };
+    };
 
     state = {
         email: '',
@@ -25,44 +28,40 @@ export default class App extends React.Component {
         image: null
     }
 
-    // async handleRegister() {
-    //     if (this.state.password === this.state.passwordConfirm) {
-    //         if (!this.state.image) {
-    //             this.setState({ image: await pickImage() })
-    //         }
-    //         const user = await firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password)
-    //         if (this.state.image) {
-    //             const result = await uploadImage(this.state.image, user.email)
-    //         }
-    //     }
-    // }
+
+
+    onValueChange2(value) {
+        this.setState({
+            gender: value
+        });
+    }
 
     handleRegister = async () => {
-        if (this.state.password === this.state.passwordConfirm ) {
+        if (this.state.password === this.state.passwordConfirm) {
             if (!this.state.image) {
                 this.setState({ image: await pickImage() })
             }
             const user = await firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password)
             // await db.collection("users").doc('test001').add({ age: this.state.age, gender: this.state.gender, location: this.state.location})
-            
+
             db.collection("users").doc(user.email).set({
                 age: this.state.age,
                 gender: this.state.gender,
                 location: this.state.location
             })
-            .then(function() {
-                console.log("Document successfully written!");
-            })
-            .catch(function(error) {
-                console.error("Error writing document: ", error);
-            });
+                .then(function () {
+                    console.log("Document successfully written!");
+                })
+                .catch(function (error) {
+                    console.error("Error writing document: ", error);
+                });
             if (this.state.image) {
                 const result = await uploadImage(this.state.image, user.email)
             }
 
             this.props.navigation.goBack();
         }
-       
+
     }
 
     async handlePickImage() {
@@ -91,10 +90,21 @@ export default class App extends React.Component {
                             <Aziz.Input onChangeText={age => this.setState({ age })} />
                         </Aziz.Item>
 
-                        <Aziz.Item floatingLabel>
-                            <Aziz.Label>Gender</Aziz.Label>
-                            <Aziz.Input onChangeText={gender => this.setState({ gender })} />
-                        </Aziz.Item>
+                        <Aziz.Label> Gender</Aziz.Label>
+
+
+                        <Aziz.Form>
+                            <Aziz.Picker
+                                mode="dropdown"
+                                placeholder="Select One"
+                                selectedValue={this.state.selected2}
+                                onValueChange={this.onValueChange2.bind(this)}
+                            >
+                                <Item label="Male" value="Male" />
+                                <Item label="Female" value="Female" />
+                            </Aziz.Picker>
+                        </Aziz.Form>
+
 
                         <Aziz.Item floatingLabel>
                             <Aziz.Label>Location</Aziz.Label>
@@ -120,7 +130,7 @@ export default class App extends React.Component {
 
                         <View style={{ padding: 40 }}>
                             <Aziz.Button onPress={() => this.handleRegister()} block success iconLeft>
-                            <Aziz.Icon name='person' />
+                                <Aziz.Icon name='person' />
                                 <Aziz.Text>Register</Aziz.Text>
                             </Aziz.Button>
                         </View>
@@ -134,7 +144,7 @@ export default class App extends React.Component {
                 </Aziz.Footer>
 
             </Aziz.Container>
-            
+
         )
     }
 }

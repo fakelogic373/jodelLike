@@ -80,7 +80,7 @@ export default class App extends React.Component {
                 console.error("Error writing document: ", error);
             });
         if (this.state.image) {
-            const result = await uploadImage(this.state.image, user.email)
+            const result = await uploadImage(this.props.navigation.state.params.user)
         }
 
         Alert.alert("Profile has been updated")
@@ -113,7 +113,10 @@ export default class App extends React.Component {
                             <Aziz.Input onChangeText={age => this.setState({ age })} />
                         </Aziz.Item>
 
-                   
+                        <Aziz.Label> Gender</Aziz.Label>
+                        <Aziz.Label >{this.state.gender}</Aziz.Label>
+
+
                         <Aziz.Form>
                             <Aziz.Picker
                                 mode="dropdown"
@@ -136,14 +139,12 @@ export default class App extends React.Component {
 
 
 
-                        {/* <View style={{ padding: 40 }}>
-                            <Aziz.Button onPress={() => this.props.navigation.navigate('ProfileEdit', {
-                                user: this.props.navigation.state.params.user
-                            })} block success iconLeft>
-                                <Aziz.Icon name='person' />
-                                <Aziz.Text>Update profile</Aziz.Text>
+                        <View style={{ paddingTop: 30, paddingRight: 80, paddingLeft: 80 }}>
+                            <Aziz.Button onPress={() => this.handlePickImage()} bordered info iconLeft>
+                                <Aziz.Icon name='ios-images' />
+                                <Aziz.Text>Choose an Image     </Aziz.Text>
                             </Aziz.Button>
-                        </View> */}
+                        </View>
 
                         <View style={{ padding: 40 }}>
                             <Aziz.Button onPress={() => this.handleRegister()} block success iconLeft>
