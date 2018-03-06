@@ -157,7 +157,13 @@ export default class Posts extends React.Component {
                         <Aziz.CardItem>
                           <Aziz.Body>
                             <Aziz.Text>
-                              {message.content}
+                              {
+                                message.type == "text"
+                                ?
+                                message.content
+                                :
+                                message.date.toString()
+                              }
                             </Aziz.Text>
                           </Aziz.Body>
                         </Aziz.CardItem>
