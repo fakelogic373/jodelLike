@@ -12,6 +12,7 @@ import AddContact from './AddContacts'
 import PostsList from './PostsList'
 import CommentsList from './CommentsList'
 import CreatePost from './createpost'
+import CreatePostImage from './createPostImage'
 import CreateComment from './createcomment'
 import { StackNavigator, } from 'react-navigation';
 import Tabnav from './tabnav'
@@ -32,6 +33,7 @@ const RootStack = StackNavigator({
   PostsList: {screen: PostsList },
   CommentsList: {screen: CommentsList},
   CreatePost: {screen: CreatePost},
+  CreatePostImage: {screen: CreatePostImage},
   CreateComment: {screen: CreateComment},
   ProfileEdit: {screen: ProfileEdit},
   Tabnav: { screen: Tabnav}

@@ -1,6 +1,7 @@
 import React from 'react'
 import { Image, StyleSheet, Text, View, TextInput, Button, FlatList } from 'react-native'
 import UserImage from './UserImage'
+import PostImage from './PostImage'
 import db from './db'
 import firebase from 'firebase'
 import Test from './test'
@@ -162,7 +163,7 @@ export default class Posts extends React.Component {
                                 ?
                                 message.content
                                 :
-                                message.date.toString()
+                                <PostImage postId={message.id} />
                               }
                             </Aziz.Text>
                           </Aziz.Body>
@@ -233,7 +234,11 @@ export default class Posts extends React.Component {
               <Aziz.Icon name="ios-images" />
             </Aziz.Button>
 
-            <Aziz.Button style={{ backgroundColor: '#DD5144' }} onPress={() => this.props.navigation.navigate('CreatePost', { user: this.props.navigation.state.params.user })}>
+            <Aziz.Button style={{ backgroundColor: '#DD5144' }} onPress={() => this.props.navigation.navigate('CreatePost', {
+              user: this.props.navigation.state.params.user,
+              userinfo: this.state.userinfo
+            }
+            )}>
               <Aziz.Icon name="ios-send" />
             </Aziz.Button>
 
