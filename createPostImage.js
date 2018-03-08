@@ -69,8 +69,8 @@ export default class CreatePostImage extends React.Component {
             })
         }
 
-
-        navigate("Tabnav", { user: this.props.navigation.state.params.user, userinfo: this.props.navigation.state.params.userinfo })
+        // navigate("Tabnav", { user: this.props.navigation.state.params.user, userinfo: this.props.navigation.state.params.userinfo })
+        this.props.navigation.goBack();
     }
 
     async uploading(id) {
@@ -90,10 +90,10 @@ export default class CreatePostImage extends React.Component {
                     <Aziz.Form>
 
 
-                        <Aziz.Item floatingLabel>
+                        {/* <Aziz.Item floatingLabel>
                             <Aziz.Label>Send a message here</Aziz.Label>
                             <Aziz.Input onChangeText={content => this.setState({ content })} />
-                        </Aziz.Item>
+                        </Aziz.Item> */}
 
                         <View style={{ paddingTop: 30, paddingRight: 80, paddingLeft: 80 }}>
                             <Aziz.Button onPress={() => this.handlePickImage()} bordered info iconLeft>

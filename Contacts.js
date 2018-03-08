@@ -10,6 +10,7 @@ export default class Contacts extends React.Component {
     static navigationOptions = ({ navigation }) => {
         return {
             title: `My Contacts`,
+            headerLeft: null
         }
     };
     state = {

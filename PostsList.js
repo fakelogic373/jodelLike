@@ -17,7 +17,9 @@ export default class Posts extends React.Component {
   static navigationOptions = ({ navigation }) => {
     return {
       title: `Posts`,
+      headerLeft: null
     }
+    
   };
 
   state = {
@@ -89,7 +91,8 @@ export default class Posts extends React.Component {
         location: this.props.navigation.state.params.userinfo.location,
         type: 'image',
         date: new Date(),
-        content: this.state.content
+        content: this.state.content,
+        number: 0
       })
     } 
 
@@ -233,6 +236,12 @@ export default class Posts extends React.Component {
             <Aziz.Button style={{ backgroundColor: '#34A34F' }} onPress={() => this.handlePickImage()}>
               <Aziz.Icon name="ios-images" />
             </Aziz.Button>
+
+            {/* <Aziz.Button style={{ backgroundColor: '#34A34F' }} onPress={() => this.props.navigation.navigate('CreatePostImage', {
+              user: this.props.navigation.state.params.user,
+              userinfo: this.state.userinfo
+            }
+            )}> */}
 
             <Aziz.Button style={{ backgroundColor: '#DD5144' }} onPress={() => this.props.navigation.navigate('CreatePost', {
               user: this.props.navigation.state.params.user,
