@@ -64,9 +64,9 @@ export default class Posts extends React.Component {
     // this.setState({ setListener })
   }
 
-  componentWillUnmount() {
-    this.state.removeListener()
-  }
+  // componentWillUnmount() {
+  //   this.state.removeListener()
+  // }
 
 
 
