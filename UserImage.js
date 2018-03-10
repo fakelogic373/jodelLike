@@ -1,33 +1,39 @@
 import React from 'react';
-import { StyleSheet,Image } from 'react-native';
+import { StyleSheet, Image } from 'react-native';
 import db from './db'
 import firebase from 'firebase'
 
 
 export default class UserImage extends React.Component {
-    state={
+    state = {
         image: ''
     }
 
-    async componentDidMount(){
-        const image = await firebase.storage().ref('images/' +this.props.user ).getDownloadURL()
-        this.setState({image})
+    async componentDidMount() {
+
+        try {
+            const image = await firebase.storage().ref('images/' + this.props.user).getDownloadURL()
+            this.setState({ image })
+
+        } catch (e) {
+            console.log("error")
+        }
 
     }
 
-    render(){
+    render() {
         return (
             this.state.image
-            ?
-            <Image 
-                style={{ width: 50, height: 50, borderRadius: 25 }}
-                source={{uri: this.state.image}}
-            />
-            :
-            <Image 
-                style={{ width: 50, height: 50, borderRadius: 25 }}
-                source={require('./images/default.png')}
-            />
+                ?
+                <Image
+                    style={{ width: 50, height: 50, borderRadius: 25 }}
+                    source={{ uri: this.state.image }}
+                />
+                :
+                <Image
+                    style={{ width: 50, height: 50, borderRadius: 25 }}
+                    source={require('./images/default.png')}
+                />
         )
-            }
+    }
 }
